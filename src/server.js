@@ -82,6 +82,46 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("combined"));
 }
 
+// Welcome endpoint
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Welcome to Velora API",
+    version: "1.0.0",
+    documentation: "https://api-velora.vercel.app/docs",
+    endpoints: {
+      health: "/health",
+      docs: "/docs",
+      auth: "/api/auth/*",
+      users: "/api/users/*",
+      health_prediction: "/api/health/*",
+      journal: "/api/journal/*",
+      gallery: "/api/gallery/*",
+      timeline: "/api/timeline/*",
+    },
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Documentation endpoint
+app.get("/docs", (req, res) => {
+  const path = require("path");
+  const fs = require("fs");
+
+  try {
+    const docsPath = path.join(__dirname, "../docs.html");
+    const docsContent = fs.readFileSync(docsPath, "utf8");
+    res.setHeader("Content-Type", "text/html");
+    res.send(docsContent);
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Documentation not found",
+      alternative: "Visit https://api-velora.vercel.app for documentation",
+    });
+  }
+});
+
 // Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velora API Documentation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f7fa;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .nav {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .nav a {
+        color: #667eea;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      .nav a:hover {
+        background-color: #f0f2ff;
+      }
+
+      .section {
+        background: white;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-header {
+        background: #667eea;
+        color: white;
+        padding: 1rem 1.5rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+      }
+
+      .section-content {
+        padding: 1.5rem;
+      }
+
+      .endpoint {
+        margin-bottom: 2rem;
+        border: 1px solid #e1e5e9;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .endpoint-header {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-bottom: 1px solid #e1e5e9;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .method {
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        min-width: 60px;
+        text-align: center;
+      }
+
+      .method.get {
+        background: #d4edda;
+        color: #155724;
+      }
+      .method.post {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      .method.put {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .method.delete {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .endpoint-url {
+        font-family: "Courier New", monospace;
+        font-weight: bold;
+        color: #495057;
+      }
+
+      .endpoint-description {
+        color: #6c757d;
+        margin-left: auto;
+      }
+
+      .endpoint-body {
+        padding: 1rem;
+      }
+
+      .code-block {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 1rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+      }
+
+      .code-block pre {
+        margin: 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+      }
+
+      .auth-required {
+        background: #fff3cd;
+        color: #856404;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        border-left: 4px solid #ffc107;
+      }
+
+      .test-form {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-top: 1rem;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+
+      .btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background: #5a67d8;
+      }
+
+      .btn-secondary {
+        background: #6c757d;
+      }
+
+      .btn-secondary:hover {
+        background: #5a6268;
+      }
+
+      .response-area {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+        min-height: 100px;
+      }
+
+      .status-200 {
+        border-left: 4px solid #28a745;
+      }
+      .status-400 {
+        border-left: 4px solid #ffc107;
+      }
+      .status-401 {
+        border-left: 4px solid #fd7e14;
+      }
+      .status-500 {
+        border-left: 4px solid #dc3545;
+      }
+
+      .loading {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      .base-url-form {
+        background: #e3f2fd;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 2rem;
+      }
+
+      .toc {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .toc h3 {
+        margin-bottom: 1rem;
+        color: #667eea;
+      }
+
+      .toc ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .toc li {
+        margin-bottom: 0.5rem;
+      }
+
+      .toc a {
+        color: #495057;
+        text-decoration: none;
+        display: block;
+        padding: 0.3rem 0;
+        border-left: 3px solid transparent;
+        padding-left: 1rem;
+        transition: all 0.3s;
+      }
+
+      .toc a:hover {
+        color: #667eea;
+        border-left-color: #667eea;
+        background-color: #f8f9fa;
+      }
+
+      @media (max-width: 768px) {
+        .endpoint-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .nav ul {
+          flex-direction: column;
+        }
+
+        .header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🏥 Velora API Documentation</h1>
+        <p>RESTful API untuk Aplikasi Kesehatan Maternal</p>
+        <p>
+          <strong>Version:</strong> 1.0.0 |
+          <strong>Environment:</strong> Production
+        </p>
+      </div>
+
+      <div class="base-url-form">
+        <h3>🌐 Base URL Configuration</h3>
+        <div class="form-group">
+          <label for="baseUrl">API Base URL:</label>
+          <input
+            type="url"
+            id="baseUrl"
+            value="https://api-velora.vercel.app"
+            placeholder="https://api-velora.vercel.app"
+          />
+          <small style="color: #6c757d"
+            >Ubah URL ini jika menggunakan environment yang berbeda</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="authToken">Authorization Token (Bearer):</label>
+          <input
+            type="text"
+            id="authToken"
+            placeholder="Masukkan JWT token untuk endpoint yang memerlukan autentikasi"
+          />
+        </div>
+      </div>
+
+      <div class="toc">
+        <h3>📚 Daftar Isi</h3>
+        <ul>
+          <li><a href="#health-check">Health Check</a></li>
+          <li><a href="#authentication">Authentication</a></li>
+          <li><a href="#user-management">User Management</a></li>
+          <li><a href="#health-prediction">Health Prediction</a></li>
+          <li><a href="#journal">Journal & Articles</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#timeline">Timeline</a></li>
+        </ul>
+      </div>
+
+      <!-- Health Check Section -->
+      <div class="section" id="health-check">
+        <div class="section-header">🏥 Health Check</div>
+        <div class="section-content">
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/health</span>
+              <span class="endpoint-description">Cek status server API</span>
+            </div>
+            <div class="endpoint-body">
+              <p>
+                Endpoint ini digunakan untuk memeriksa apakah server API
+                berjalan dengan baik.
+              </p>
+
+              <div class="test-form">
+                <button class="btn" onclick="testEndpoint('/health', 'GET')">
+                  🧪 Test Endpoint
+                </button>
+              </div>
+
+              <div class="code-block">
+                <strong>Expected Response (200):</strong>
+                <pre>
+{
+  "status": "OK",
+  "message": "Velora API Server is running",
+  "timestamp": "2025-06-29T00:00:00.000Z",
+  "version": "1.0.0"
+}</pre
+                >
+              </div>
+
+              <div
+                id="response-health"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-health-content"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Authentication Section -->
+      <div class="section" id="authentication">
+        <div class="section-header">🔐 Authentication</div>
+        <div class="section-content">
+          <!-- Register -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method post">POST</span>
+              <span class="endpoint-url">/api/auth/register</span>
+              <span class="endpoint-description">Registrasi pengguna baru</span>
+            </div>
+            <div class="endpoint-body">
+              <p>Endpoint untuk mendaftarkan pengguna baru ke sistem.</p>
+
+              <div class="test-form">
+                <div class="form-group">
+                  <label for="reg-fullName">Nama Lengkap:</label>
+                  <input
+                    type="text"
+                    id="reg-fullName"
+                    value="Test User"
+                    placeholder="Nama Lengkap"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="reg-phone">Nomor HP:</label>
+                  <input
+                    type="text"
+                    id="reg-phone"
+                    value="081234567890"
+                    placeholder="081234567890"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="reg-email">Email:</label>
+                  <input
+                    type="email"
+                    id="reg-email"
+                    value="test@example.com"
+                    placeholder="test@example.com"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="reg-password">Password:</label>
+                  <input
+                    type="password"
+                    id="reg-password"
+                    value="TestPass123"
+                    placeholder="Password123"
+                  />
+                </div>
+                <button class="btn" onclick="testRegister()">
+                  🧪 Test Register
+                </button>
+              </div>
+
+              <div class="code-block">
+                <strong>Request Body:</strong>
+                <pre>
+{
+  "fullName": "Test User",
+  "phone": "081234567890",
+  "email": "test@example.com",
+  "password": "TestPass123"
+}</pre
+                >
+              </div>
+
+              <div
+                id="response-register"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-register-content"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Login -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method post">POST</span>
+              <span class="endpoint-url">/api/auth/login</span>
+              <span class="endpoint-description">Login pengguna</span>
+            </div>
+            <div class="endpoint-body">
+              <p>Endpoint untuk login pengguna yang sudah terdaftar.</p>
+
+              <div class="test-form">
+                <div class="form-group">
+                  <label for="login-nama">Email/Nama:</label>
+                  <input
+                    type="text"
+                    id="login-nama"
+                    value="test@example.com"
+                    placeholder="Email atau Nama Lengkap"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="login-password">Password:</label>
+                  <input
+                    type="password"
+                    id="login-password"
+                    value="TestPass123"
+                    placeholder="Password"
+                  />
+                </div>
+                <button class="btn" onclick="testLogin()">🧪 Test Login</button>
+              </div>
+
+              <div
+                id="response-login"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-login-content"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Management Section -->
+      <div class="section" id="user-management">
+        <div class="section-header">👤 User Management</div>
+        <div class="section-content">
+          <!-- Get Profile -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/api/users/profile</span>
+              <span class="endpoint-description">Ambil profil pengguna</span>
+            </div>
+            <div class="endpoint-body">
+              <div class="auth-required">
+                🔒 Endpoint ini memerlukan autentikasi. Pastikan token JWT sudah
+                diset di form di atas.
+              </div>
+
+              <div class="test-form">
+                <button
+                  class="btn"
+                  onclick="testEndpoint('/api/users/profile', 'GET', null, true)"
+                >
+                  🧪 Test Get Profile
+                </button>
+              </div>
+
+              <div
+                id="response-/api/users/profile"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-/api/users/profile-content"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Prediction Section -->
+      <div class="section" id="health-prediction">
+        <div class="section-header">🏥 Health Prediction</div>
+        <div class="section-content">
+          <!-- Health Predict -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method post">POST</span>
+              <span class="endpoint-url">/api/health/predict</span>
+              <span class="endpoint-description"
+                >Prediksi risiko kesehatan maternal</span
+              >
+            </div>
+            <div class="endpoint-body">
+              <div class="auth-required">
+                🔒 Endpoint ini memerlukan autentikasi.
+              </div>
+
+              <div class="test-form">
+                <div class="form-group">
+                  <label for="health-age">Usia (10-80):</label>
+                  <input
+                    type="number"
+                    id="health-age"
+                    value="25"
+                    min="10"
+                    max="80"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="health-systolic"
+                    >Tekanan Darah Sistolik (70-200):</label
+                  >
+                  <input
+                    type="number"
+                    id="health-systolic"
+                    value="120"
+                    min="70"
+                    max="200"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="health-diastolic"
+                    >Tekanan Darah Diastolik (40-140):</label
+                  >
+                  <input
+                    type="number"
+                    id="health-diastolic"
+                    value="80"
+                    min="40"
+                    max="140"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="health-bs">Gula Darah (6.0-19.0):</label>
+                  <input
+                    type="number"
+                    id="health-bs"
+                    value="7.5"
+                    min="6"
+                    max="19"
+                    step="0.1"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="health-temp">Suhu Tubuh (98.0-103.0):</label>
+                  <input
+                    type="number"
+                    id="health-temp"
+                    value="98.6"
+                    min="98"
+                    max="103"
+                    step="0.1"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="health-heart">Detak Jantung (7-122):</label>
+                  <input
+                    type="number"
+                    id="health-heart"
+                    value="72"
+                    min="7"
+                    max="122"
+                  />
+                </div>
+                <button class="btn" onclick="testHealthPrediction()">
+                  🧪 Test Health Prediction
+                </button>
+              </div>
+
+              <div
+                id="response-health-prediction"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-health-prediction-content"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Health History -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/api/health/history</span>
+              <span class="endpoint-description"
+                >Riwayat prediksi kesehatan</span
+              >
+            </div>
+            <div class="endpoint-body">
+              <div class="auth-required">
+                🔒 Endpoint ini memerlukan autentikasi.
+              </div>
+
+              <div class="test-form">
+                <button
+                  class="btn"
+                  onclick="testEndpoint('/api/health/history', 'GET', null, true)"
+                >
+                  🧪 Test Health History
+                </button>
+              </div>
+
+              <div
+                id="response-/api/health/history"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-/api/health/history-content"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Journal Section -->
+      <div class="section" id="journal">
+        <div class="section-header">📖 Journal & Articles</div>
+        <div class="section-content">
+          <!-- Get Articles -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/api/journal/articles</span>
+              <span class="endpoint-description">Ambil daftar artikel</span>
+            </div>
+            <div class="endpoint-body">
+              <p>
+                Endpoint publik untuk mengambil daftar artikel yang
+                dipublikasikan.
+              </p>
+
+              <div class="test-form">
+                <div class="form-group">
+                  <label for="articles-page">Halaman:</label>
+                  <input type="number" id="articles-page" value="1" min="1" />
+                </div>
+                <div class="form-group">
+                  <label for="articles-limit">Limit per halaman:</label>
+                  <input
+                    type="number"
+                    id="articles-limit"
+                    value="10"
+                    min="1"
+                    max="50"
+                  />
+                </div>
+                <button class="btn" onclick="testGetArticles()">
+                  🧪 Test Get Articles
+                </button>
+              </div>
+
+              <div
+                id="response-articles"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-articles-content"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Get Categories -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/api/journal/categories</span>
+              <span class="endpoint-description">Ambil kategori artikel</span>
+            </div>
+            <div class="endpoint-body">
+              <div class="test-form">
+                <button
+                  class="btn"
+                  onclick="testEndpoint('/api/journal/categories', 'GET')"
+                >
+                  🧪 Test Get Categories
+                </button>
+              </div>
+
+              <div
+                id="response-/api/journal/categories"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-/api/journal/categories-content"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery Section -->
+      <div class="section" id="gallery">
+        <div class="section-header">📸 Gallery</div>
+        <div class="section-content">
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/api/gallery/photos</span>
+              <span class="endpoint-description"
+                >Ambil foto galeri pengguna</span
+              >
+            </div>
+            <div class="endpoint-body">
+              <div class="auth-required">
+                🔒 Endpoint ini memerlukan autentikasi.
+              </div>
+
+              <div class="test-form">
+                <button
+                  class="btn"
+                  onclick="testEndpoint('/api/gallery/photos', 'GET', null, true)"
+                >
+                  🧪 Test Get Photos
+                </button>
+              </div>
+
+              <div
+                id="response-/api/gallery/photos"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-/api/gallery/photos-content"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline Section -->
+      <div class="section" id="timeline">
+        <div class="section-header">📅 Timeline</div>
+        <div class="section-content">
+          <!-- Get Timeline Profile -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/api/timeline/profile</span>
+              <span class="endpoint-description">Ambil profil kehamilan</span>
+            </div>
+            <div class="endpoint-body">
+              <div class="auth-required">
+                🔒 Endpoint ini memerlukan autentikasi.
+              </div>
+
+              <div class="test-form">
+                <button
+                  class="btn"
+                  onclick="testEndpoint('/api/timeline/profile', 'GET', null, true)"
+                >
+                  🧪 Test Get Timeline Profile
+                </button>
+              </div>
+
+              <div
+                id="response-/api/timeline/profile"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-/api/timeline/profile-content"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Get Timeline Entries -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-url">/api/timeline/entries</span>
+              <span class="endpoint-description">Ambil entri timeline</span>
+            </div>
+            <div class="endpoint-body">
+              <div class="auth-required">
+                🔒 Endpoint ini memerlukan autentikasi.
+              </div>
+
+              <div class="test-form">
+                <button
+                  class="btn"
+                  onclick="testEndpoint('/api/timeline/entries', 'GET', null, true)"
+                >
+                  🧪 Test Get Timeline Entries
+                </button>
+              </div>
+
+              <div
+                id="response-/api/timeline/entries"
+                class="response-area"
+                style="display: none"
+              >
+                <strong>Response:</strong>
+                <pre id="response-/api/timeline/entries-content"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        style="
+          text-align: center;
+          margin-top: 3rem;
+          padding: 2rem;
+          background: white;
+          border-radius: 10px;
+        "
+      >
+        <h3>📞 Support & Contact</h3>
+        <p>
+          Untuk dukungan dan pertanyaan tentang API, silakan hubungi tim
+          development.
+        </p>
+        <p>
+          <strong>API Version:</strong> 1.0.0 |
+          <strong>Last Updated:</strong> June 2025
+        </p>
+        <p><strong>Deployment:</strong> Vercel Serverless Functions</p>
+      </div>
+    </div>
+
+    <script>
+      // Global variables
+      let baseUrl = "https://api-velora.vercel.app";
+      let authToken = "";
+
+      // Update base URL when changed
+      document
+        .getElementById("baseUrl")
+        .addEventListener("input", function (e) {
+          baseUrl = e.target.value.replace(/\/$/, ""); // Remove trailing slash
+        });
+
+      // Update auth token when changed
+      document
+        .getElementById("authToken")
+        .addEventListener("input", function (e) {
+          authToken = e.target.value;
+        });
+
+      // Generic function to test endpoints
+      async function testEndpoint(
+        endpoint,
+        method,
+        body = null,
+        requireAuth = false
+      ) {
+        const responseId = `response-${endpoint.replace(/\//g, "/")}`;
+        const responseContentId = `response-${endpoint.replace(
+          /\//g,
+          "/"
+        )}-content`;
+        const responseDiv = document.getElementById(responseId);
+        const responseContent = document.getElementById(responseContentId);
+
+        // Show loading state
+        responseDiv.style.display = "block";
+        responseDiv.className = "response-area loading";
+        responseContent.textContent = "Loading...";
+
+        try {
+          const headers = {
+            "Content-Type": "application/json",
+          };
+
+          if (requireAuth && authToken) {
+            headers["Authorization"] = `Bearer ${authToken}`;
+          }
+
+          const config = {
+            method: method,
+            headers: headers,
+          };
+
+          if (body) {
+            config.body = JSON.stringify(body);
+          }
+
+          const response = await fetch(`${baseUrl}${endpoint}`, config);
+          const data = await response.json();
+
+          // Update response display
+          responseDiv.className = `response-area status-${
+            Math.floor(response.status / 100) * 100
+          }`;
+          responseContent.textContent = `Status: ${
+            response.status
+          }\n\n${JSON.stringify(data, null, 2)}`;
+
+          // Auto-save token if login successful
+          if (
+            endpoint === "/api/auth/login" &&
+            response.ok &&
+            data.data &&
+            data.data.token
+          ) {
+            document.getElementById("authToken").value = data.data.token;
+            authToken = data.data.token;
+            alert("Token berhasil disimpan otomatis!");
+          }
+        } catch (error) {
+          responseDiv.className = "response-area status-500";
+          responseContent.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // Specific test functions
+      function testRegister() {
+        const body = {
+          fullName: document.getElementById("reg-fullName").value,
+          phone: document.getElementById("reg-phone").value,
+          email: document.getElementById("reg-email").value,
+          password: document.getElementById("reg-password").value,
+        };
+
+        testEndpoint("/api/auth/register", "POST", body);
+      }
+
+      function testLogin() {
+        const body = {
+          nama: document.getElementById("login-nama").value,
+          password: document.getElementById("login-password").value,
+        };
+
+        testEndpoint("/api/auth/login", "POST", body);
+      }
+
+      function testHealthPrediction() {
+        const body = {
+          Age: parseInt(document.getElementById("health-age").value),
+          SystolicBP: parseInt(
+            document.getElementById("health-systolic").value
+          ),
+          DiastolicBP: parseInt(
+            document.getElementById("health-diastolic").value
+          ),
+          BS: parseFloat(document.getElementById("health-bs").value),
+          BodyTemp: parseFloat(document.getElementById("health-temp").value),
+          HeartRate: parseInt(document.getElementById("health-heart").value),
+        };
+
+        // Custom handling for health prediction
+        const responseId = "response-health-prediction";
+        const responseContentId = "response-health-prediction-content";
+        const responseDiv = document.getElementById(responseId);
+        const responseContent = document.getElementById(responseContentId);
+
+        responseDiv.style.display = "block";
+        responseDiv.className = "response-area loading";
+        responseContent.textContent = "Loading...";
+
+        fetch(`${baseUrl}/api/health/predict`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(body),
+        })
+          .then((response) =>
+            response.json().then((data) => ({ status: response.status, data }))
+          )
+          .then(({ status, data }) => {
+            responseDiv.className = `response-area status-${
+              Math.floor(status / 100) * 100
+            }`;
+            responseContent.textContent = `Status: ${status}\n\n${JSON.stringify(
+              data,
+              null,
+              2
+            )}`;
+          })
+          .catch((error) => {
+            responseDiv.className = "response-area status-500";
+            responseContent.textContent = `Error: ${error.message}`;
+          });
+      }
+
+      function testGetArticles() {
+        const page = document.getElementById("articles-page").value;
+        const limit = document.getElementById("articles-limit").value;
+        const endpoint = `/api/journal/articles?page=${page}&limit=${limit}`;
+
+        // Custom handling for articles
+        const responseId = "response-articles";
+        const responseContentId = "response-articles-content";
+        const responseDiv = document.getElementById(responseId);
+        const responseContent = document.getElementById(responseContentId);
+
+        responseDiv.style.display = "block";
+        responseDiv.className = "response-area loading";
+        responseContent.textContent = "Loading...";
+
+        fetch(`${baseUrl}${endpoint}`)
+          .then((response) =>
+            response.json().then((data) => ({ status: response.status, data }))
+          )
+          .then(({ status, data }) => {
+            responseDiv.className = `response-area status-${
+              Math.floor(status / 100) * 100
+            }`;
+            responseContent.textContent = `Status: ${status}\n\n${JSON.stringify(
+              data,
+              null,
+              2
+            )}`;
+          })
+          .catch((error) => {
+            responseDiv.className = "response-area status-500";
+            responseContent.textContent = `Error: ${error.message}`;
+          });
+      }
+
+      // Smooth scrolling for navigation
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Initialize with current base URL
+      document.addEventListener("DOMContentLoaded", function () {
+        const baseUrlInput = document.getElementById("baseUrl");
+        baseUrl = baseUrlInput.value;
+      });
+    </script>
+  </body>
+</html>

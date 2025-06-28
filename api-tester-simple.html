@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velora API Tester</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
+      .content {
+        padding: 2rem;
+      }
+      .test-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        background: #f8f9fa;
+      }
+      .test-section h3 {
+        margin-top: 0;
+        color: #495057;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #495057;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 0.7rem;
+        border: 2px solid #ced4da;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+      .btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-right: 0.5rem;
+      }
+      .btn:hover {
+        background: #5a67d8;
+        transform: translateY(-2px);
+      }
+      .response {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .success {
+        border-color: #28a745;
+        background: #d4edda;
+      }
+      .error {
+        border-color: #dc3545;
+        background: #f8d7da;
+      }
+      .config {
+        background: #e3f2fd;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+      }
+      .status {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        margin: 0.5rem 0;
+        font-weight: 600;
+      }
+      .status.online {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status.offline {
+        background: #f8d7da;
+        color: #721c24;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🏥 Velora API Tester</h1>
+        <p>Test semua endpoint API Velora dengan mudah</p>
+      </div>
+
+      <div class="content">
+        <!-- Configuration -->
+        <div class="config">
+          <h3>⚙️ Konfigurasi API</h3>
+          <div class="form-group">
+            <label for="apiUrl">API Base URL:</label>
+            <input
+              type="url"
+              id="apiUrl"
+              value="https://api-velora.vercel.app"
+              placeholder="https://api-velora.vercel.app"
+            />
+          </div>
+          <div class="form-group">
+            <label for="authToken">Token Autentikasi (Bearer):</label>
+            <input
+              type="text"
+              id="authToken"
+              placeholder="Masukkan JWT token untuk endpoint yang memerlukan auth"
+            />
+          </div>
+          <button class="btn" onclick="testConnection()">
+            🔗 Test Koneksi
+          </button>
+          <div id="connectionStatus"></div>
+        </div>
+
+        <!-- Health Check -->
+        <div class="test-section">
+          <h3>🏥 Health Check</h3>
+          <p>Test status server API</p>
+          <button class="btn" onclick="testHealth()">🧪 Test Health</button>
+          <div id="healthResponse" class="response" style="display: none"></div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="test-section">
+          <h3>🔐 Authentication</h3>
+
+          <!-- Register -->
+          <h4>Register User</h4>
+          <div class="form-group">
+            <label>Nama Lengkap:</label>
+            <input
+              type="text"
+              id="regName"
+              value="Test User API"
+              placeholder="Nama Lengkap"
+            />
+          </div>
+          <div class="form-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              id="regEmail"
+              value="testapi@example.com"
+              placeholder="email@example.com"
+            />
+          </div>
+          <div class="form-group">
+            <label>Nomor HP:</label>
+            <input
+              type="text"
+              id="regPhone"
+              value="081234567890"
+              placeholder="081234567890"
+            />
+          </div>
+          <div class="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              id="regPassword"
+              value="TestPass123"
+              placeholder="Password123"
+            />
+          </div>
+          <button class="btn" onclick="testRegister()">🧪 Test Register</button>
+          <div
+            id="registerResponse"
+            class="response"
+            style="display: none"
+          ></div>
+
+          <!-- Login -->
+          <h4>Login User</h4>
+          <div class="form-group">
+            <label>Email/Nama:</label>
+            <input
+              type="text"
+              id="loginName"
+              value="testapi@example.com"
+              placeholder="Email atau Nama"
+            />
+          </div>
+          <div class="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              id="loginPassword"
+              value="TestPass123"
+              placeholder="Password"
+            />
+          </div>
+          <button class="btn" onclick="testLogin()">🧪 Test Login</button>
+          <div id="loginResponse" class="response" style="display: none"></div>
+        </div>
+
+        <!-- Health Prediction -->
+        <div class="test-section">
+          <h3>🏥 Health Prediction</h3>
+          <p><strong>Catatan:</strong> Memerlukan token autentikasi</p>
+
+          <div class="form-group">
+            <label>Usia (10-80):</label>
+            <input type="number" id="healthAge" value="25" min="10" max="80" />
+          </div>
+          <div class="form-group">
+            <label>Tekanan Darah Sistolik (70-200):</label>
+            <input
+              type="number"
+              id="healthSystolic"
+              value="120"
+              min="70"
+              max="200"
+            />
+          </div>
+          <div class="form-group">
+            <label>Tekanan Darah Diastolik (40-140):</label>
+            <input
+              type="number"
+              id="healthDiastolic"
+              value="80"
+              min="40"
+              max="140"
+            />
+          </div>
+          <div class="form-group">
+            <label>Gula Darah (6.0-19.0):</label>
+            <input
+              type="number"
+              id="healthBS"
+              value="7.5"
+              min="6"
+              max="19"
+              step="0.1"
+            />
+          </div>
+          <div class="form-group">
+            <label>Suhu Tubuh (98.0-103.0):</label>
+            <input
+              type="number"
+              id="healthTemp"
+              value="98.6"
+              min="98"
+              max="103"
+              step="0.1"
+            />
+          </div>
+          <div class="form-group">
+            <label>Detak Jantung (7-122):</label>
+            <input
+              type="number"
+              id="healthHeart"
+              value="72"
+              min="7"
+              max="122"
+            />
+          </div>
+          <button class="btn" onclick="testHealthPrediction()">
+            🧪 Test Health Prediction
+          </button>
+          <div
+            id="healthPredictionResponse"
+            class="response"
+            style="display: none"
+          ></div>
+        </div>
+
+        <!-- Journal -->
+        <div class="test-section">
+          <h3>📖 Journal Articles</h3>
+          <p>Endpoint publik untuk artikel</p>
+
+          <div class="form-group">
+            <label>Halaman:</label>
+            <input type="number" id="articlePage" value="1" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Limit per halaman:</label>
+            <input type="number" id="articleLimit" value="5" min="1" max="50" />
+          </div>
+          <button class="btn" onclick="testArticles()">
+            🧪 Test Get Articles
+          </button>
+          <button class="btn" onclick="testCategories()">
+            🧪 Test Get Categories
+          </button>
+          <div
+            id="articlesResponse"
+            class="response"
+            style="display: none"
+          ></div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="test-section">
+          <h3>👤 User Profile</h3>
+          <p><strong>Catatan:</strong> Memerlukan token autentikasi</p>
+
+          <button class="btn" onclick="testProfile()">
+            🧪 Test Get Profile
+          </button>
+          <div
+            id="profileResponse"
+            class="response"
+            style="display: none"
+          ></div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="test-section">
+          <h3>📸 Gallery</h3>
+          <p><strong>Catatan:</strong> Memerlukan token autentikasi</p>
+
+          <button class="btn" onclick="testGallery()">
+            🧪 Test Get Photos
+          </button>
+          <div
+            id="galleryResponse"
+            class="response"
+            style="display: none"
+          ></div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="test-section">
+          <h3>📅 Timeline</h3>
+          <p><strong>Catatan:</strong> Memerlukan token autentikasi</p>
+
+          <button class="btn" onclick="testTimeline()">
+            🧪 Test Timeline Profile
+          </button>
+          <button class="btn" onclick="testTimelineEntries()">
+            🧪 Test Timeline Entries
+          </button>
+          <div
+            id="timelineResponse"
+            class="response"
+            style="display: none"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let apiUrl = "https://api-velora.vercel.app";
+      let authToken = "";
+
+      // Update config when changed
+      document.getElementById("apiUrl").addEventListener("input", function (e) {
+        apiUrl = e.target.value.replace(/\/$/, "");
+      });
+
+      document
+        .getElementById("authToken")
+        .addEventListener("input", function (e) {
+          authToken = e.target.value;
+        });
+
+      // Generic API call function
+      async function apiCall(
+        endpoint,
+        method = "GET",
+        body = null,
+        requireAuth = false
+      ) {
+        const headers = {
+          "Content-Type": "application/json",
+        };
+
+        if (requireAuth && authToken) {
+          headers["Authorization"] = `Bearer ${authToken}`;
+        }
+
+        const config = {
+          method: method,
+          headers: headers,
+        };
+
+        if (body) {
+          config.body = JSON.stringify(body);
+        }
+
+        try {
+          const response = await fetch(`${apiUrl}${endpoint}`, config);
+          const data = await response.json();
+          return { status: response.status, data };
+        } catch (error) {
+          return { status: 0, data: { error: error.message } };
+        }
+      }
+
+      // Display response
+      function displayResponse(elementId, result) {
+        const element = document.getElementById(elementId);
+        element.style.display = "block";
+        element.className =
+          "response " +
+          (result.status >= 200 && result.status < 300 ? "success" : "error");
+        element.textContent = `Status: ${result.status}\n\n${JSON.stringify(
+          result.data,
+          null,
+          2
+        )}`;
+      }
+
+      // Test functions
+      async function testConnection() {
+        const statusDiv = document.getElementById("connectionStatus");
+        statusDiv.innerHTML = '<div class="status">Testing connection...</div>';
+
+        const result = await apiCall("/health");
+        if (result.status === 200) {
+          statusDiv.innerHTML =
+            '<div class="status online">✅ Connected to API</div>';
+        } else {
+          statusDiv.innerHTML =
+            '<div class="status offline">❌ Connection failed</div>';
+        }
+      }
+
+      async function testHealth() {
+        const result = await apiCall("/health");
+        displayResponse("healthResponse", result);
+      }
+
+      async function testRegister() {
+        const body = {
+          fullName: document.getElementById("regName").value,
+          email: document.getElementById("regEmail").value,
+          phone: document.getElementById("regPhone").value,
+          password: document.getElementById("regPassword").value,
+        };
+        const result = await apiCall("/api/auth/register", "POST", body);
+        displayResponse("registerResponse", result);
+      }
+
+      async function testLogin() {
+        const body = {
+          nama: document.getElementById("loginName").value,
+          password: document.getElementById("loginPassword").value,
+        };
+        const result = await apiCall("/api/auth/login", "POST", body);
+        displayResponse("loginResponse", result);
+
+        // Auto-save token if login successful
+        if (
+          result.status === 200 &&
+          result.data.data &&
+          result.data.data.token
+        ) {
+          document.getElementById("authToken").value = result.data.data.token;
+          authToken = result.data.data.token;
+          alert("Token berhasil disimpan otomatis!");
+        }
+      }
+
+      async function testHealthPrediction() {
+        if (!authToken) {
+          alert(
+            "Silakan login terlebih dahulu atau masukkan token autentikasi!"
+          );
+          return;
+        }
+
+        const body = {
+          Age: parseInt(document.getElementById("healthAge").value),
+          SystolicBP: parseInt(document.getElementById("healthSystolic").value),
+          DiastolicBP: parseInt(
+            document.getElementById("healthDiastolic").value
+          ),
+          BS: parseFloat(document.getElementById("healthBS").value),
+          BodyTemp: parseFloat(document.getElementById("healthTemp").value),
+          HeartRate: parseInt(document.getElementById("healthHeart").value),
+        };
+        const result = await apiCall("/api/health/predict", "POST", body, true);
+        displayResponse("healthPredictionResponse", result);
+      }
+
+      async function testArticles() {
+        const page = document.getElementById("articlePage").value;
+        const limit = document.getElementById("articleLimit").value;
+        const result = await apiCall(
+          `/api/journal/articles?page=${page}&limit=${limit}`
+        );
+        displayResponse("articlesResponse", result);
+      }
+
+      async function testCategories() {
+        const result = await apiCall("/api/journal/categories");
+        displayResponse("articlesResponse", result);
+      }
+
+      async function testProfile() {
+        if (!authToken) {
+          alert(
+            "Silakan login terlebih dahulu atau masukkan token autentikasi!"
+          );
+          return;
+        }
+        const result = await apiCall("/api/users/profile", "GET", null, true);
+        displayResponse("profileResponse", result);
+      }
+
+      async function testGallery() {
+        if (!authToken) {
+          alert(
+            "Silakan login terlebih dahulu atau masukkan token autentikasi!"
+          );
+          return;
+        }
+        const result = await apiCall("/api/gallery/photos", "GET", null, true);
+        displayResponse("galleryResponse", result);
+      }
+
+      async function testTimeline() {
+        if (!authToken) {
+          alert(
+            "Silakan login terlebih dahulu atau masukkan token autentikasi!"
+          );
+          return;
+        }
+        const result = await apiCall(
+          "/api/timeline/profile",
+          "GET",
+          null,
+          true
+        );
+        displayResponse("timelineResponse", result);
+      }
+
+      async function testTimelineEntries() {
+        if (!authToken) {
+          alert(
+            "Silakan login terlebih dahulu atau masukkan token autentikasi!"
+          );
+          return;
+        }
+        const result = await apiCall(
+          "/api/timeline/entries",
+          "GET",
+          null,
+          true
+        );
+        displayResponse("timelineResponse", result);
+      }
+
+      // Auto-test connection on load
+      window.addEventListener("load", function () {
+        setTimeout(testConnection, 1000);
+      });
+    </script>
+  </body>
+</html>
