@@ -4,7 +4,8 @@
 const axios = require("axios");
 
 // Ganti dengan URL deployment Vercel Anda
-const BASE_URL = process.env.API_URL || "https://your-deployment-url.vercel.app";
+const BASE_URL =
+  process.env.API_URL || "https://your-deployment-url.vercel.app";
 
 let authToken = "";
 
@@ -50,10 +51,12 @@ async function testHealthCheck() {
 async function testPublicEndpoints() {
   try {
     // Test articles endpoint (public)
-    const articles = await axios.get(`${BASE_URL}/api/journal/articles?limit=5`);
+    const articles = await axios.get(
+      `${BASE_URL}/api/journal/articles?limit=5`
+    );
     log("✅ Public Articles - SUCCESS", {
       totalArticles: articles.data.data?.articles?.length || 0,
-      pagination: articles.data.data?.pagination
+      pagination: articles.data.data?.pagination,
     });
 
     // Test categories endpoint (public)
@@ -64,7 +67,7 @@ async function testPublicEndpoints() {
     const healthParams = await axios.get(`${BASE_URL}/api/health/parameters`);
     log("✅ Health Parameters - SUCCESS", {
       ageRanges: healthParams.data.data?.age_ranges?.length || 0,
-      bpRanges: healthParams.data.data?.blood_pressure_ranges?.length || 0
+      bpRanges: healthParams.data.data?.blood_pressure_ranges?.length || 0,
     });
 
     return true;
@@ -76,12 +79,15 @@ async function testPublicEndpoints() {
 
 async function testRegister() {
   try {
-    const response = await axios.post(`${BASE_URL}/api/auth/register`, testUser);
+    const response = await axios.post(
+      `${BASE_URL}/api/auth/register`,
+      testUser
+    );
     log("✅ Register - SUCCESS", {
       userId: response.data.data?.user?.id,
-      token: response.data.data?.token ? "✓ Token received" : "❌ No token"
+      token: response.data.data?.token ? "✓ Token received" : "❌ No token",
     });
-    
+
     if (response.data.data?.token) {
       authToken = response.data.data.token;
     }
@@ -100,9 +106,9 @@ async function testLogin() {
     });
     log("✅ Login - SUCCESS", {
       userId: response.data.data?.user?.id,
-      token: response.data.data?.token ? "✓ Token received" : "❌ No token"
+      token: response.data.data?.token ? "✓ Token received" : "❌ No token",
     });
-    
+
     if (response.data.data?.token) {
       authToken = response.data.data.token;
     }
@@ -123,10 +129,12 @@ async function testProtectedEndpoints() {
 
   try {
     // Test get profile
-    const profile = await axios.get(`${BASE_URL}/api/users/profile`, { headers });
+    const profile = await axios.get(`${BASE_URL}/api/users/profile`, {
+      headers,
+    });
     log("✅ Get Profile - SUCCESS", {
       fullName: profile.data.data?.user?.full_name,
-      email: profile.data.data?.user?.email
+      email: profile.data.data?.user?.email,
     });
 
     // Test health prediction
@@ -138,7 +146,7 @@ async function testProtectedEndpoints() {
       BodyTemp: 98.6,
       HeartRate: 72,
     };
-    
+
     const prediction = await axios.post(
       `${BASE_URL}/api/health/predict`,
       healthData,
@@ -146,7 +154,7 @@ async function testProtectedEndpoints() {
     );
     log("✅ Health Prediction - SUCCESS", {
       riskLevel: prediction.data.data?.risk_level,
-      confidence: prediction.data.data?.confidence
+      confidence: prediction.data.data?.confidence,
     });
 
     // Test timeline profile
@@ -155,9 +163,9 @@ async function testProtectedEndpoints() {
       last_menstrual_period: "2024-03-10",
       current_weight: 65.5,
       pre_pregnancy_weight: 58.0,
-      height: 165.0
+      height: 165.0,
     };
-    
+
     const timeline = await axios.post(
       `${BASE_URL}/api/timeline/profile`,
       timelineProfile,
@@ -165,7 +173,7 @@ async function testProtectedEndpoints() {
     );
     log("✅ Timeline Profile - SUCCESS", {
       dueDate: timeline.data.data?.profile?.due_date,
-      currentWeek: timeline.data.data?.profile?.current_pregnancy_week
+      currentWeek: timeline.data.data?.profile?.current_pregnancy_week,
     });
 
     return true;
@@ -182,10 +190,13 @@ async function testCORS() {
     log("✅ CORS - SUCCESS", {
       status: response.status,
       headers: {
-        'access-control-allow-origin': response.headers['access-control-allow-origin'],
-        'access-control-allow-methods': response.headers['access-control-allow-methods'],
-        'access-control-allow-headers': response.headers['access-control-allow-headers']
-      }
+        "access-control-allow-origin":
+          response.headers["access-control-allow-origin"],
+        "access-control-allow-methods":
+          response.headers["access-control-allow-methods"],
+        "access-control-allow-headers":
+          response.headers["access-control-allow-headers"],
+      },
     });
     return true;
   } catch (error) {
@@ -225,7 +236,7 @@ async function runTests() {
 
   console.log("=" * 50);
   console.log(`📈 Overall: ${passedTests}/${totalTests} tests passed`);
-  
+
   if (passedTests === totalTests) {
     console.log("🎉 All tests passed! Deployment is successful.");
   } else {

@@ -6,7 +6,9 @@ const { v4: uuidv4 } = require("uuid");
 const os = require("os");
 
 // Use /tmp directory for Vercel serverless environment
-const uploadDir = process.env.VERCEL ? os.tmpdir() : path.join(__dirname, "../../uploads");
+const uploadDir = process.env.VERCEL
+  ? os.tmpdir()
+  : path.join(__dirname, "../../uploads");
 
 // Ensure upload directory exists (only for local development)
 if (!process.env.VERCEL && !fs.existsSync(uploadDir)) {

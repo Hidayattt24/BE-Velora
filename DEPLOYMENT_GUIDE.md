@@ -17,6 +17,7 @@ Panduan lengkap untuk deploy Velora Backend API ke Vercel.
 
 1. Buat project baru di Supabase
 2. Jalankan script SQL dari folder `database/`:
+
    ```sql
    -- Jalankan berurutan:
    -- 1. schema.sql (struktur database)
@@ -32,11 +33,13 @@ Panduan lengkap untuk deploy Velora Backend API ke Vercel.
 ### 2. Environment Variables Setup
 
 Copy dan edit file environment:
+
 ```bash
 cp .env.example .env
 ```
 
 Isi dengan nilai yang sesuai:
+
 ```bash
 # Supabase Configuration
 SUPABASE_URL=https://your-project.supabase.co
@@ -70,16 +73,19 @@ RATE_LIMIT_MAX_REQUESTS=100
 ### Method 1: Vercel CLI (Recommended)
 
 1. **Install Vercel CLI**
+
    ```bash
    npm install -g vercel
    ```
 
 2. **Login ke Vercel**
+
    ```bash
    vercel login
    ```
 
 3. **Deploy dari root directory**
+
    ```bash
    cd be-velora
    vercel --prod
@@ -99,11 +105,13 @@ RATE_LIMIT_MAX_REQUESTS=100
 ### Method 2: Vercel Dashboard
 
 1. **Connect Repository**
+
    - Push code ke GitHub/GitLab
    - Import project di Vercel dashboard
    - Pilih root directory: `be-velora`
 
 2. **Configure Build Settings**
+
    - Build Command: `npm run build` (atau kosong)
    - Output Directory: `api`
    - Install Command: `npm install`
@@ -117,11 +125,13 @@ RATE_LIMIT_MAX_REQUESTS=100
 ### 1. Test API Endpoints
 
 Test endpoint dasar:
+
 ```bash
 curl https://your-api-domain.vercel.app/health
 ```
 
 Response yang diharapkan:
+
 ```json
 {
   "status": "OK",
@@ -134,6 +144,7 @@ Response yang diharapkan:
 ### 2. Update Frontend CORS
 
 Update environment variables di frontend untuk mengarah ke API URL yang baru:
+
 ```bash
 NEXT_PUBLIC_API_URL=https://your-api-domain.vercel.app
 ```
@@ -148,52 +159,57 @@ NEXT_PUBLIC_API_URL=https://your-api-domain.vercel.app
 
 ### Required Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `SUPABASE_URL` | Supabase project URL | `https://xyz.supabase.co` |
-| `SUPABASE_ANON_KEY` | Supabase anonymous key | `eyJ...` |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | `eyJ...` |
-| `JWT_SECRET` | JWT signing secret | `your_32_char_secret` |
-| `ALLOWED_ORIGINS` | CORS allowed origins | `https://app.vercel.app` |
+| Variable                    | Description               | Example                   |
+| --------------------------- | ------------------------- | ------------------------- |
+| `SUPABASE_URL`              | Supabase project URL      | `https://xyz.supabase.co` |
+| `SUPABASE_ANON_KEY`         | Supabase anonymous key    | `eyJ...`                  |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | `eyJ...`                  |
+| `JWT_SECRET`                | JWT signing secret        | `your_32_char_secret`     |
+| `ALLOWED_ORIGINS`           | CORS allowed origins      | `https://app.vercel.app`  |
 
 ### Optional Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `JWT_EXPIRES_IN` | JWT expiration time | `7d` |
-| `MAX_FILE_SIZE` | Max upload size in bytes | `10485760` |
-| `RATE_LIMIT_MAX_REQUESTS` | Rate limit max requests | `100` |
-| `SMTP_HOST` | Email SMTP host | `smtp.gmail.com` |
-| `SMTP_PORT` | Email SMTP port | `587` |
+| Variable                  | Description              | Default          |
+| ------------------------- | ------------------------ | ---------------- |
+| `JWT_EXPIRES_IN`          | JWT expiration time      | `7d`             |
+| `MAX_FILE_SIZE`           | Max upload size in bytes | `10485760`       |
+| `RATE_LIMIT_MAX_REQUESTS` | Rate limit max requests  | `100`            |
+| `SMTP_HOST`               | Email SMTP host          | `smtp.gmail.com` |
+| `SMTP_PORT`               | Email SMTP port          | `587`            |
 
 ## Troubleshooting
 
 ### Common Issues
 
 #### 1. CORS Errors
+
 ```bash
 # Solution: Update ALLOWED_ORIGINS
 vercel env add ALLOWED_ORIGINS https://your-frontend.vercel.app
 ```
 
 #### 2. Database Connection Errors
+
 - Pastikan Supabase credentials benar
 - Check RLS policies di Supabase
 - Pastikan database schema sudah di-setup
 
 #### 3. JWT Errors
+
 ```bash
 # Generate strong JWT secret
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
 #### 4. File Upload Issues
+
 - Vercel memiliki limitasi untuk serverless functions
 - File uploads mungkin perlu menggunakan external storage (Supabase Storage/Cloudinary)
 
 ### Debug Mode
 
 Enable debug mode untuk troubleshooting:
+
 ```bash
 vercel env add NODE_ENV development
 ```
@@ -201,6 +217,7 @@ vercel env add NODE_ENV development
 ### Logs
 
 Check deployment logs:
+
 ```bash
 vercel logs https://your-api-domain.vercel.app
 ```
@@ -208,16 +225,19 @@ vercel logs https://your-api-domain.vercel.app
 ## Performance Optimization
 
 ### 1. Database Optimization
+
 - Setup database indexes yang diperlukan
 - Gunakan RLS policies yang efisien
 - Enable connection pooling di Supabase
 
 ### 2. API Optimization
+
 - Implement proper caching headers
 - Use compression middleware
 - Optimize image processing
 
 ### 3. Monitoring
+
 - Setup monitoring dengan Vercel Analytics
 - Monitor API performance dan error rates
 - Setup alerts untuk downtime
@@ -236,6 +256,7 @@ vercel logs https://your-api-domain.vercel.app
 ## Maintenance
 
 ### Regular Tasks
+
 1. Monitor server logs
 2. Update dependencies secara berkala
 3. Backup database
@@ -243,6 +264,7 @@ vercel logs https://your-api-domain.vercel.app
 5. Performance monitoring
 
 ### Updates
+
 ```bash
 # Update dependencies
 npm update
@@ -254,11 +276,13 @@ vercel --prod
 ## Support
 
 ### Documentation
+
 - [Vercel Documentation](https://vercel.com/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [API Documentation](./API_DOCUMENTATION.md)
 
 ### Contact
+
 - Technical Issues: Create issue di repository
 - Emergency: Contact team lead
 
@@ -267,18 +291,21 @@ vercel --prod
 ## Deployment Checklist
 
 Pre-deployment:
+
 - [ ] Database schema setup
 - [ ] Environment variables configured
 - [ ] CORS origins updated
 - [ ] SSL certificates ready
 
 Deployment:
+
 - [ ] Code deployed successfully
 - [ ] All environment variables set
 - [ ] Health check passes
 - [ ] Basic authentication test
 
 Post-deployment:
+
 - [ ] Frontend updated with new API URL
 - [ ] Full user flow tested
 - [ ] Monitoring setup
@@ -286,5 +313,5 @@ Post-deployment:
 
 ---
 
-*Last updated: [Current Date]*
-*Version: 1.0.0*
+_Last updated: [Current Date]_
+_Version: 1.0.0_

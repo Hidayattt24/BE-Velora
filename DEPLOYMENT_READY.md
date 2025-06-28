@@ -62,6 +62,7 @@ be-velora/
 Copy dari checklist ini: [ENV_VARIABLES_CHECKLIST.md](./ENV_VARIABLES_CHECKLIST.md)
 
 **Required:**
+
 - `SUPABASE_URL`
 - `SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
@@ -71,17 +72,20 @@ Copy dari checklist ini: [ENV_VARIABLES_CHECKLIST.md](./ENV_VARIABLES_CHECKLIST.
 ## 🧪 Testing After Deployment
 
 ### Method 1: API Tester (Visual)
+
 1. Buka `api-tester.html` di browser
 2. Masukkan URL deployment Anda
 3. Run tests secara visual
 
 ### Method 2: Command Line
+
 ```bash
 # Test dengan script otomatis
 API_URL=https://your-deployment-url.vercel.app node test-deployment.js
 ```
 
 ### Method 3: Manual cURL
+
 ```bash
 # Health check
 curl https://your-deployment-url.vercel.app/health
@@ -95,6 +99,7 @@ curl -X POST https://your-deployment-url.vercel.app/api/auth/register \
 ## 📊 Endpoints Summary
 
 ### ✅ Authentication Endpoints
+
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 - `POST /api/auth/forgot-password` - Password reset
@@ -103,6 +108,7 @@ curl -X POST https://your-deployment-url.vercel.app/api/auth/register \
 - `GET /api/auth/me` - Current user info
 
 ### ✅ User Management
+
 - `GET /api/users/profile` - Get user profile
 - `PUT /api/users/profile` - Update profile
 - `PUT /api/users/change-password` - Change password
@@ -110,12 +116,14 @@ curl -X POST https://your-deployment-url.vercel.app/api/auth/register \
 - `DELETE /api/users/delete-account` - Delete account
 
 ### ✅ Health Prediction
+
 - `POST /api/health/predict` - ML health risk prediction
 - `GET /api/health/history` - Prediction history
 - `GET /api/health/statistics` - User statistics
 - `GET /api/health/parameters` - Health parameters
 
 ### ✅ Journal Articles
+
 - `GET /api/journal/articles` - List articles (public)
 - `GET /api/journal/articles/:id` - Single article (public)
 - `GET /api/journal/categories` - Article categories (public)
@@ -126,6 +134,7 @@ curl -X POST https://your-deployment-url.vercel.app/api/auth/register \
 - `GET /api/journal/bookmarks` - User bookmarks (auth)
 
 ### ✅ Gallery
+
 - `GET /api/gallery/photos` - User photos (auth)
 - `GET /api/gallery/photos/:id` - Single photo (auth)
 - `POST /api/gallery/upload` - Upload photo (auth)
@@ -133,6 +142,7 @@ curl -X POST https://your-deployment-url.vercel.app/api/auth/register \
 - `DELETE /api/gallery/photos/:id` - Delete photo (auth)
 
 ### ✅ Timeline
+
 - `GET /api/timeline/profile` - Pregnancy profile (auth)
 - `POST /api/timeline/profile` - Create/update profile (auth)
 - `GET /api/timeline/entries` - Timeline entries (auth)
@@ -167,6 +177,7 @@ curl -X POST https://your-deployment-url.vercel.app/api/auth/register \
 Backend Velora telah siap untuk production deployment dengan:
 
 ### ✅ Complete Features
+
 - Authentication & authorization
 - User management
 - Health prediction with ML integration
@@ -175,6 +186,7 @@ Backend Velora telah siap untuk production deployment dengan:
 - Pregnancy tracking timeline
 
 ### ✅ Production Ready
+
 - Optimized for Vercel deployment
 - Environment-based configuration
 - Security best practices
@@ -182,6 +194,7 @@ Backend Velora telah siap untuk production deployment dengan:
 - Comprehensive API documentation
 
 ### ✅ Developer Friendly
+
 - Complete API documentation
 - Visual testing tools
 - Automated test scripts

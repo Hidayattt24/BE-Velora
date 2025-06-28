@@ -5,23 +5,27 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 ## 🚀 Features
 
 - **Authentication & Authorization**
+
   - User registration & login
   - JWT-based authentication
   - Password reset dengan OTP
   - Profile management
 
 - **Health Risk Prediction**
+
   - Integrasi dengan ML API untuk prediksi risiko kesehatan
   - Riwayat prediksi
   - Statistik kesehatan
 
 - **Journal Articles**
+
   - CRUD operations untuk artikel
   - Bookmark sistem
   - Kategori dan pencarian
   - Pagination
 
 - **Gallery Management**
+
   - Upload foto kehamilan
   - Optimasi gambar otomatis
   - Timeline foto berdasarkan minggu kehamilan
@@ -48,6 +52,7 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 ### 🚀 Deploy via Vercel Dashboard (Recommended)
 
 **Quick Setup:**
+
 1. Push code ke GitHub
 2. Import project di [vercel.com](https://vercel.com)
 3. Set environment variables
@@ -59,6 +64,7 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 ### Prerequisites
 
 1. **Supabase Setup**
+
    - Create project and setup database
    - Run SQL scripts in `database/` folder
    - Get API credentials
@@ -73,7 +79,7 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 ### Environment Variables Required
 
 - `SUPABASE_URL` - Your Supabase project URL
-- `SUPABASE_ANON_KEY` - Supabase anon public key  
+- `SUPABASE_ANON_KEY` - Supabase anon public key
 - `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
 - `JWT_SECRET` - 32+ character secret for JWT tokens
 - `ALLOWED_ORIGINS` - Frontend domain for CORS
@@ -143,6 +149,7 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 ## 🧪 Testing
 
 ### Run All Tests
+
 ```bash
 # Test locally
 npm run test:comprehensive
@@ -152,6 +159,7 @@ npm run test:production
 ```
 
 ### Individual Tests
+
 ```bash
 # Health check
 npm run test:quick
@@ -164,7 +172,9 @@ npm run test:simple
 ```
 
 ### Manual Testing
+
 Test the API with tools like Postman or curl:
+
 ```bash
 # Health check
 curl https://your-api-domain.vercel.app/health
@@ -186,6 +196,7 @@ curl -X POST https://your-api-domain.vercel.app/api/auth/register \
 **Authentication**: Bearer Token in Authorization header
 
 ### Main Endpoints
+
 - `GET /health` - Health check
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login

@@ -33,9 +33,11 @@ Authorization: Bearer <your_jwt_token>
 ### Health Check
 
 #### GET /health
+
 Mengecek status server API.
 
 **Response:**
+
 ```json
 {
   "status": "OK",
@@ -50,9 +52,11 @@ Mengecek status server API.
 ## Authentication Endpoints
 
 ### POST /api/auth/register
+
 Mendaftarkan pengguna baru.
 
 **Request Body:**
+
 ```json
 {
   "fullName": "Nama Lengkap",
@@ -64,6 +68,7 @@ Mendaftarkan pengguna baru.
 ```
 
 **Response Success (201):**
+
 ```json
 {
   "success": true,
@@ -81,9 +86,11 @@ Mendaftarkan pengguna baru.
 ```
 
 ### POST /api/auth/login
+
 Login pengguna.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -92,6 +99,7 @@ Login pengguna.
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -109,9 +117,11 @@ Login pengguna.
 ```
 
 ### POST /api/auth/forgot-password
+
 Meminta reset password.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com"
@@ -119,6 +129,7 @@ Meminta reset password.
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -127,9 +138,11 @@ Meminta reset password.
 ```
 
 ### POST /api/auth/reset-password
+
 Reset password dengan token.
 
 **Request Body:**
+
 ```json
 {
   "token": "reset_token",
@@ -139,6 +152,7 @@ Reset password dengan token.
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -151,14 +165,17 @@ Reset password dengan token.
 ## User Endpoints
 
 ### GET /api/users/profile
+
 Mendapatkan profil pengguna.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -176,15 +193,18 @@ Authorization: Bearer <token>
 ```
 
 ### PUT /api/users/profile
+
 Update profil pengguna.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 Content-Type: multipart/form-data
 ```
 
 **Request Body:**
+
 ```json
 {
   "fullName": "Nama Lengkap Baru",
@@ -195,6 +215,7 @@ Content-Type: multipart/form-data
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -208,14 +229,17 @@ Content-Type: multipart/form-data
 ```
 
 ### DELETE /api/users/account
+
 Menghapus akun pengguna (soft delete).
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -228,15 +252,18 @@ Authorization: Bearer <token>
 ## Journal Endpoints
 
 ### GET /api/journal/articles
+
 Mendapatkan daftar artikel (public).
 
 **Query Parameters:**
+
 - `page` (optional): Halaman (default: 1)
 - `limit` (optional): Jumlah per halaman (default: 10)
 - `category` (optional): Filter kategori
 - `search` (optional): Pencarian berdasarkan judul/konten
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -265,9 +292,11 @@ Mendapatkan daftar artikel (public).
 ```
 
 ### GET /api/journal/articles/:id
+
 Mendapatkan detail artikel.
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -286,18 +315,22 @@ Mendapatkan detail artikel.
 ```
 
 ### GET /api/journal/my-journal
+
 Mendapatkan jurnal pengguna.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Query Parameters:**
+
 - `page` (optional): Halaman (default: 1)
 - `limit` (optional): Jumlah per halaman (default: 10)
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -323,14 +356,17 @@ Authorization: Bearer <token>
 ```
 
 ### POST /api/journal/my-journal
+
 Membuat entry jurnal baru.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Request Body:**
+
 ```json
 {
   "date": "2024-01-01",
@@ -341,6 +377,7 @@ Authorization: Bearer <token>
 ```
 
 **Response Success (201):**
+
 ```json
 {
   "success": true,
@@ -357,14 +394,17 @@ Authorization: Bearer <token>
 ```
 
 ### PUT /api/journal/my-journal/:id
+
 Update entry jurnal.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Request Body:**
+
 ```json
 {
   "mood": "neutral",
@@ -374,6 +414,7 @@ Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -385,14 +426,17 @@ Authorization: Bearer <token>
 ```
 
 ### DELETE /api/journal/my-journal/:id
+
 Menghapus entry jurnal.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -405,18 +449,22 @@ Authorization: Bearer <token>
 ## Gallery Endpoints
 
 ### GET /api/gallery/photos
+
 Mendapatkan foto pengguna.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Query Parameters:**
+
 - `page` (optional): Halaman (default: 1)
 - `limit` (optional): Jumlah per halaman (default: 12)
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -442,21 +490,25 @@ Authorization: Bearer <token>
 ```
 
 ### POST /api/gallery/photos
+
 Upload foto baru.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 Content-Type: multipart/form-data
 ```
 
 **Request Body (Form Data):**
+
 - `image`: File gambar
 - `title` (optional): Judul foto
 - `description` (optional): Deskripsi
 - `pregnancyWeek` (optional): Minggu kehamilan (1-42)
 
 **Response Success (201):**
+
 ```json
 {
   "success": true,
@@ -473,14 +525,17 @@ Content-Type: multipart/form-data
 ```
 
 ### PUT /api/gallery/photos/:id
+
 Update informasi foto.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Request Body:**
+
 ```json
 {
   "title": "Judul Baru",
@@ -490,6 +545,7 @@ Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -501,14 +557,17 @@ Authorization: Bearer <token>
 ```
 
 ### DELETE /api/gallery/photos/:id
+
 Menghapus foto.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -521,14 +580,17 @@ Authorization: Bearer <token>
 ## Timeline Endpoints
 
 ### GET /api/timeline/milestones
+
 Mendapatkan milestone timeline pengguna.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -551,14 +613,17 @@ Authorization: Bearer <token>
 ```
 
 ### POST /api/timeline/milestones/:id/complete
+
 Menandai milestone sebagai selesai.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -574,14 +639,17 @@ Authorization: Bearer <token>
 ## Health Check Endpoints
 
 ### GET /api/health/checkup
+
 Mendapatkan riwayat pemeriksaan kesehatan.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response Success (200):**
+
 ```json
 {
   "success": true,
@@ -601,14 +669,17 @@ Authorization: Bearer <token>
 ```
 
 ### POST /api/health/checkup
+
 Menambah record pemeriksaan baru.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Request Body:**
+
 ```json
 {
   "date": "2024-01-01",
@@ -620,6 +691,7 @@ Authorization: Bearer <token>
 ```
 
 **Response Success (201):**
+
 ```json
 {
   "success": true,
@@ -635,6 +707,7 @@ Authorization: Bearer <token>
 ## Error Responses
 
 ### Validation Error (422)
+
 ```json
 {
   "success": false,
@@ -649,6 +722,7 @@ Authorization: Bearer <token>
 ```
 
 ### Unauthorized (401)
+
 ```json
 {
   "success": false,
@@ -657,6 +731,7 @@ Authorization: Bearer <token>
 ```
 
 ### Not Found (404)
+
 ```json
 {
   "success": false,
@@ -665,6 +740,7 @@ Authorization: Bearer <token>
 ```
 
 ### Server Error (500)
+
 ```json
 {
   "success": false,
@@ -677,15 +753,18 @@ Authorization: Bearer <token>
 ## File Upload
 
 ### Supported Formats
+
 - JPEG (.jpg, .jpeg)
 - PNG (.png)
 - WebP (.webp)
 
 ### Size Limits
+
 - Maximum file size: 10MB
 - Images are automatically optimized and resized
 
 ### Upload Process
+
 1. Files diterima melalui `multipart/form-data`
 2. Validasi format dan ukuran
 3. Optimisasi gambar menggunakan Sharp
@@ -697,6 +776,7 @@ Authorization: Bearer <token>
 ## Rate Limiting
 
 API menggunakan rate limiting untuk mencegah abuse:
+
 - **Window**: 15 menit
 - **Max Requests**: 100 per IP address
 - **Headers**: Rate limit info disertakan dalam response headers
@@ -706,6 +786,7 @@ API menggunakan rate limiting untuk mencegah abuse:
 ## CORS Policy
 
 API dikonfigurasi untuk menerima request dari:
+
 - `http://localhost:3000` (development)
 - Domain frontend production yang dikonfigurasi
 
@@ -761,6 +842,7 @@ ALLOWED_IMAGE_TYPES=image/jpeg,image/png,image/webp
 ## Testing
 
 ### Manual Testing
+
 ```bash
 # Install dependencies
 npm install
@@ -772,6 +854,7 @@ npm run dev
 ```
 
 ### API Testing Files
+
 - `test-api.js` - Script untuk testing endpoint
 - `simple-test.js` - Testing sederhana
 - `quick-test.js` - Quick health check
@@ -781,10 +864,11 @@ npm run dev
 ## Support
 
 Untuk support atau pertanyaan:
+
 - Email: team@velora.com
 - Documentation: Lihat file README.md
 - Issues: Submit melalui repository
 
 ---
 
-*Dokumentasi ini terus diperbarui seiring dengan pengembangan API.*
+_Dokumentasi ini terus diperbarui seiring dengan pengembangan API._

@@ -37,7 +37,7 @@ const upload = multer({
 const processImageBuffer = async (buffer, mimetype) => {
   try {
     let sharpInstance = sharp(buffer);
-    
+
     // Resize if too large
     sharpInstance = sharpInstance.resize(1200, 1200, {
       fit: "inside",
@@ -92,11 +92,14 @@ const uploadMiddleware = (req, res, next) => {
 
     try {
       // Process image buffer
-      const processedBuffer = await processImageBuffer(req.file.buffer, req.file.mimetype);
-      
+      const processedBuffer = await processImageBuffer(
+        req.file.buffer,
+        req.file.mimetype
+      );
+
       // Generate unique filename
       const uniqueFilename = `${Date.now()}-${uuidv4()}.jpg`;
-      
+
       // Update file info with processed data
       req.file.buffer = processedBuffer;
       req.file.size = processedBuffer.length;
@@ -149,7 +152,10 @@ const multipleUploadMiddleware = (req, res, next) => {
       const processedFiles = [];
 
       for (const file of req.files) {
-        const processedBuffer = await processImageBuffer(file.buffer, file.mimetype);
+        const processedBuffer = await processImageBuffer(
+          file.buffer,
+          file.mimetype
+        );
         const uniqueFilename = `${Date.now()}-${uuidv4()}.jpg`;
 
         processedFiles.push({
@@ -166,9 +172,9 @@ const multipleUploadMiddleware = (req, res, next) => {
     } catch (imageError) {
       console.error("Image processing error:", imageError);
       // Continue with original files if processing fails
-      req.files = req.files.map(file => ({
+      req.files = req.files.map((file) => ({
         ...file,
-        filename: `${Date.now()}-${uuidv4()}.jpg`
+        filename: `${Date.now()}-${uuidv4()}.jpg`,
       }));
       next();
     }

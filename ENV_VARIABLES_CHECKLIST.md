@@ -5,65 +5,81 @@ Gunakan list ini untuk copy-paste environment variables di Vercel Dashboard.
 ## 🔴 REQUIRED VARIABLES (Wajib)
 
 ### SUPABASE_URL
+
 ```
 https://your-project-id.supabase.co
 ```
-*Dapatkan dari: Supabase Dashboard > Settings > API > Project URL*
+
+_Dapatkan dari: Supabase Dashboard > Settings > API > Project URL_
 
 ### SUPABASE_ANON_KEY
+
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvdXItcHJvamVjdC1pZCIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNjk5MDA5NjAwLCJleHAiOjIwMTQ1ODU2MDB9.your-key-here
 ```
-*Dapatkan dari: Supabase Dashboard > Settings > API > anon public*
+
+_Dapatkan dari: Supabase Dashboard > Settings > API > anon public_
 
 ### SUPABASE_SERVICE_ROLE_KEY
+
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvdXItcHJvamVjdC1pZCIsInJvbGUiOiJzZXJ2aWNlX3JvbGUiLCJpYXQiOjE2OTkwMDk2MDAsImV4cCI6MjAxNDU4NTYwMH0.your-service-key-here
 ```
-*Dapatkan dari: Supabase Dashboard > Settings > API > service_role secret*
+
+_Dapatkan dari: Supabase Dashboard > Settings > API > service_role secret_
 
 ### JWT_SECRET
+
 ```
 your_super_secret_jwt_key_minimum_32_characters_long_random_string
 ```
-*Generate dari: https://randomkeygen.com/ atau crypto.randomBytes(32)*
+
+_Generate dari: https://randomkeygen.com/ atau crypto.randomBytes(32)_
 
 ### ALLOWED_ORIGINS
+
 ```
 https://your-frontend-domain.vercel.app,http://localhost:3000
 ```
-*Ganti dengan URL frontend Anda yang sudah di-deploy*
+
+_Ganti dengan URL frontend Anda yang sudah di-deploy_
 
 ---
 
 ## 🟡 OPTIONAL VARIABLES (Opsional)
 
 ### NODE_ENV
+
 ```
 production
 ```
 
 ### JWT_EXPIRES_IN
+
 ```
 7d
 ```
 
 ### RATE_LIMIT_WINDOW_MS
+
 ```
 900000
 ```
 
 ### RATE_LIMIT_MAX_REQUESTS
+
 ```
 100
 ```
 
 ### MAX_FILE_SIZE
+
 ```
 10485760
 ```
 
 ### ALLOWED_IMAGE_TYPES
+
 ```
 image/jpeg,image/png,image/webp
 ```
@@ -73,28 +89,35 @@ image/jpeg,image/png,image/webp
 ## 📧 EMAIL CONFIGURATION (Untuk Reset Password)
 
 ### SMTP_HOST
+
 ```
 smtp.gmail.com
 ```
 
 ### SMTP_PORT
+
 ```
 587
 ```
 
 ### SMTP_USER
+
 ```
 your-email@gmail.com
 ```
-*Gmail yang sudah enable App Password*
+
+_Gmail yang sudah enable App Password_
 
 ### SMTP_PASS
+
 ```
 your-16-character-app-password
 ```
-*App Password dari Google Account, bukan password biasa*
+
+_App Password dari Google Account, bukan password biasa_
 
 ### FROM_EMAIL
+
 ```
 noreply@velora.app
 ```
@@ -104,6 +127,7 @@ noreply@velora.app
 ## 🤖 ML API INTEGRATION (Jika ada)
 
 ### ML_API_URL
+
 ```
 https://your-ml-api.vercel.app
 ```
@@ -132,11 +156,13 @@ https://your-ml-api.vercel.app
 ## ✅ Verifikasi Environment Variables
 
 Setelah redeploy, test endpoint ini:
+
 ```
 https://your-deployment-url.vercel.app/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "OK",
@@ -149,16 +175,19 @@ Expected response:
 ## 🚨 Troubleshooting
 
 ### Jika ada error "Environment variable not found":
+
 1. Cek apakah variable sudah ditambahkan
 2. Pastikan Environment nya mencakup "Production"
 3. Redeploy setelah menambah variable
 
 ### Jika CORS error:
+
 1. Pastikan `ALLOWED_ORIGINS` sudah benar
 2. Tambahkan domain frontend Anda
 3. Format: `https://domain1.com,https://domain2.com`
 
 ### Jika database connection error:
+
 1. Cek Supabase credentials
 2. Pastikan database sudah setup (jalankan SQL scripts)
 3. Test connection dari Supabase dashboard
@@ -171,7 +200,7 @@ Expected response:
 Variable: SUPABASE_URL
 Value: [YOUR_SUPABASE_URL]
 
-Variable: SUPABASE_ANON_KEY  
+Variable: SUPABASE_ANON_KEY
 Value: [YOUR_ANON_KEY]
 
 Variable: SUPABASE_SERVICE_ROLE_KEY

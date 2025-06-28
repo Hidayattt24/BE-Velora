@@ -3,6 +3,7 @@
 ## 📋 Overview
 
 Velora Backend API adalah RESTful API untuk aplikasi kesehatan maternal yang mendukung:
+
 - 🔐 Autentikasi pengguna dengan JWT
 - 👤 Manajemen profil pengguna
 - 🏥 Prediksi risiko kesehatan dengan ML
@@ -60,6 +61,7 @@ Semua endpoint menggunakan format response yang konsisten:
 Checks API server status.
 
 **Response:**
+
 ```json
 {
   "status": "OK",
@@ -78,6 +80,7 @@ Checks API server status.
 Register a new user account.
 
 **Request Body:**
+
 ```json
 {
   "fullName": "Sarah Johnson",
@@ -88,12 +91,14 @@ Register a new user account.
 ```
 
 **Validation Rules:**
+
 - `fullName`: 2-100 characters
 - `phone`: Valid Indonesian mobile number
 - `email`: Valid email format
 - `password`: Min 8 chars, must contain lowercase, uppercase, and number
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -116,6 +121,7 @@ Register a new user account.
 Login with existing account.
 
 **Request Body:**
+
 ```json
 {
   "nama": "sarah@example.com",
@@ -126,6 +132,7 @@ Login with existing account.
 **Note:** `nama` can be either email or full name.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -148,6 +155,7 @@ Login with existing account.
 Request password reset OTP.
 
 **Request Body:**
+
 ```json
 {
   "email": "sarah@example.com"
@@ -155,6 +163,7 @@ Request password reset OTP.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -170,6 +179,7 @@ Request password reset OTP.
 Verify OTP for password reset.
 
 **Request Body:**
+
 ```json
 {
   "email": "sarah@example.com",
@@ -178,6 +188,7 @@ Verify OTP for password reset.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -193,6 +204,7 @@ Verify OTP for password reset.
 Reset password after OTP verification.
 
 **Request Body:**
+
 ```json
 {
   "email": "sarah@example.com",
@@ -201,6 +213,7 @@ Reset password after OTP verification.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -209,11 +222,13 @@ Reset password after OTP verification.
 ```
 
 ### GET /api/auth/me
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get current user profile.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -235,11 +250,13 @@ Get current user profile.
 ## 👤 User Management Endpoints
 
 ### GET /api/users/profile
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get detailed user profile.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -260,11 +277,13 @@ Get detailed user profile.
 ```
 
 ### PUT /api/users/profile
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Update user profile information.
 
 **Request Body:**
+
 ```json
 {
   "fullName": "Sarah Johnson Updated",
@@ -273,6 +292,7 @@ Update user profile information.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -290,11 +310,13 @@ Update user profile information.
 ```
 
 ### PUT /api/users/change-password
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Change user password.
 
 **Request Body:**
+
 ```json
 {
   "currentPassword": "OldPassword123",
@@ -303,6 +325,7 @@ Change user password.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -311,11 +334,13 @@ Change user password.
 ```
 
 ### PUT /api/users/change-email
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Change user email address.
 
 **Request Body:**
+
 ```json
 {
   "newEmail": "newemail@example.com",
@@ -324,6 +349,7 @@ Change user email address.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -339,11 +365,13 @@ Change user email address.
 ```
 
 ### DELETE /api/users/delete-account
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Delete user account (soft delete).
 
 **Request Body:**
+
 ```json
 {
   "password": "CurrentPassword123"
@@ -351,6 +379,7 @@ Delete user account (soft delete).
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -363,11 +392,13 @@ Delete user account (soft delete).
 ## 🏥 Health Prediction Endpoints
 
 ### POST /api/health/predict
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Predict maternal health risk using ML model.
 
 **Request Body:**
+
 ```json
 {
   "Age": 25,
@@ -380,6 +411,7 @@ Predict maternal health risk using ML model.
 ```
 
 **Validation Rules:**
+
 - `Age`: 10-80 years
 - `SystolicBP`: 70-200 mmHg
 - `DiastolicBP`: 40-140 mmHg
@@ -388,6 +420,7 @@ Predict maternal health risk using ML model.
 - `HeartRate`: 50-120 bpm
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -405,15 +438,18 @@ Predict maternal health risk using ML model.
 ```
 
 ### GET /api/health/history
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get user's health prediction history with pagination.
 
 **Query Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 10)
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -443,11 +479,13 @@ Get user's health prediction history with pagination.
 ```
 
 ### GET /api/health/statistics
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get user's health statistics summary.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -465,20 +503,19 @@ Get user's health statistics summary.
 Get health parameters reference data for frontend.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
   "data": {
     "age_ranges": [
-      {"label": "10-20 tahun", "value": 15},
-      {"label": "21-25 tahun", "value": 23}
+      { "label": "10-20 tahun", "value": 15 },
+      { "label": "21-25 tahun", "value": 23 }
     ],
     "blood_pressure_ranges": [
-      {"label": "Normal", "systolic": "90-120", "diastolic": "60-80"}
+      { "label": "Normal", "systolic": "90-120", "diastolic": "60-80" }
     ],
-    "blood_sugar_ranges": [
-      {"label": "Normal", "min": 6.0, "max": 7.8}
-    ]
+    "blood_sugar_ranges": [{ "label": "Normal", "min": 6.0, "max": 7.8 }]
   }
 }
 ```
@@ -492,12 +529,14 @@ Get health parameters reference data for frontend.
 Get published articles with pagination and filters.
 
 **Query Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 10)
 - `category` (optional): Filter by category
 - `search` (optional): Search in title and content
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -537,6 +576,7 @@ Get published articles with pagination and filters.
 Get single article by ID.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -569,26 +609,29 @@ Get single article by ID.
 Get all available article categories.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
   "data": {
     "categories": [
-      {"name": "Trimester 1", "count": 15},
-      {"name": "Trimester 2", "count": 12},
-      {"name": "Trimester 3", "count": 10},
-      {"name": "Nutrisi", "count": 8}
+      { "name": "Trimester 1", "count": 15 },
+      { "name": "Trimester 2", "count": 12 },
+      { "name": "Trimester 3", "count": 10 },
+      { "name": "Nutrisi", "count": 8 }
     ]
   }
 }
 ```
 
 ### POST /api/journal/articles
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Create new article (for content creators).
 
 **Request Body:**
+
 ```json
 {
   "title": "Tips Nutrisi Trimester Pertama",
@@ -602,6 +645,7 @@ Create new article (for content creators).
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -619,11 +663,13 @@ Create new article (for content creators).
 ```
 
 ### PUT /api/journal/articles/:id
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Update existing article (author only).
 
 **Request Body:**
+
 ```json
 {
   "title": "Tips Nutrisi Trimester Pertama (Updated)",
@@ -633,6 +679,7 @@ Update existing article (author only).
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -648,11 +695,13 @@ Update existing article (author only).
 ```
 
 ### DELETE /api/journal/articles/:id
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Delete article (author only).
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -661,11 +710,13 @@ Delete article (author only).
 ```
 
 ### POST /api/journal/articles/:id/bookmark
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Bookmark/unbookmark article.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -677,15 +728,18 @@ Bookmark/unbookmark article.
 ```
 
 ### GET /api/journal/bookmarks
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get user's bookmarked articles.
 
 **Query Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 10)
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -714,16 +768,19 @@ Get user's bookmarked articles.
 ## 📸 Gallery Endpoints
 
 ### GET /api/gallery/photos
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get user's photos with pagination.
 
 **Query Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 12)
 - `pregnancy_week` (optional): Filter by pregnancy week
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -749,11 +806,13 @@ Get user's photos with pagination.
 ```
 
 ### GET /api/gallery/photos/:id
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get single photo by ID.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -771,17 +830,20 @@ Get single photo by ID.
 ```
 
 ### POST /api/gallery/upload
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Upload photo to gallery.
 
 **Request (Multipart Form):**
+
 - `image`: Image file (JPEG, PNG, WebP, max 10MB)
 - `title`: Photo title (optional, 1-100 chars)
 - `description`: Photo description (optional, max 500 chars)
 - `pregnancy_week`: Pregnancy week (optional, 1-42)
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -799,11 +861,13 @@ Upload photo to gallery.
 ```
 
 ### PUT /api/gallery/photos/:id
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Update photo information.
 
 **Request Body:**
+
 ```json
 {
   "title": "USG 20 Minggu - Updated",
@@ -813,6 +877,7 @@ Update photo information.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -828,11 +893,13 @@ Update photo information.
 ```
 
 ### DELETE /api/gallery/photos/:id
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Delete photo from gallery.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -845,11 +912,13 @@ Delete photo from gallery.
 ## 📅 Timeline Endpoints
 
 ### GET /api/timeline/profile
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get user's pregnancy profile.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -870,11 +939,13 @@ Get user's pregnancy profile.
 ```
 
 ### POST /api/timeline/profile
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Create/update pregnancy profile.
 
 **Request Body:**
+
 ```json
 {
   "due_date": "2024-12-15",
@@ -886,6 +957,7 @@ Create/update pregnancy profile.
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -903,15 +975,18 @@ Create/update pregnancy profile.
 ```
 
 ### GET /api/timeline/entries
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get user's timeline entries.
 
 **Query Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 10)
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -940,11 +1015,13 @@ Get user's timeline entries.
 ```
 
 ### POST /api/timeline/entries
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Create timeline entry for specific week.
 
 **Request Body:**
+
 ```json
 {
   "pregnancy_week": 20,
@@ -964,6 +1041,7 @@ Create timeline entry for specific week.
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -979,11 +1057,13 @@ Create timeline entry for specific week.
 ```
 
 ### GET /api/timeline/entries/:week
-*🔐 Requires Authentication*
+
+_🔐 Requires Authentication_
 
 Get timeline entry for specific pregnancy week.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -1006,6 +1086,7 @@ Get timeline entry for specific pregnancy week.
 Get pregnancy milestones information.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -1033,6 +1114,7 @@ Get pregnancy milestones information.
 Get available health services data.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -1060,6 +1142,7 @@ Get available health services data.
 Get available symptoms data.
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -1182,6 +1265,7 @@ API_URL=https://your-deployment-url.vercel.app node test-deployment.js
 ## 📞 Support
 
 For support and questions:
+
 - 📧 Email: support@velora.app
 - 🐛 Issues: GitHub Repository
 - 📚 Documentation: This API docs

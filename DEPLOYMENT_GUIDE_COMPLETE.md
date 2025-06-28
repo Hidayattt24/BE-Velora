@@ -16,7 +16,7 @@
    ```bash
    # In Supabase SQL Editor:
    # 1. database/schema.sql
-   # 2. database/sample_data.sql  
+   # 2. database/sample_data.sql
    # 3. database/fix-rls-policies.sql
    ```
 3. Get your Supabase credentials:
@@ -178,16 +178,19 @@ be-velora/
 ### Common Issues
 
 1. **500 Internal Server Error**
+
    - Check environment variables are set correctly
    - Verify Supabase credentials
    - Check Vercel function logs: `vercel logs`
 
 2. **Database Connection Error**
+
    - Verify Supabase URL and keys
    - Check if RLS policies are configured
    - Ensure database tables exist
 
 3. **CORS Errors**
+
    - Add your frontend domain to `ALLOWED_ORIGINS`
    - Check vercel.json CORS configuration
 

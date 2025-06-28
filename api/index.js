@@ -1,2 +1,2 @@
 // Vercel API entry point
-module.exports = require('../src/server.js');
+module.exports = require("../src/server.js");

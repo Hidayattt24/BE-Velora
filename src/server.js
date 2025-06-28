@@ -47,15 +47,15 @@ const corsOptions = {
       "http://localhost:3000",
       "https://localhost:3000",
     ];
-    
+
     // Allow requests with no origin (mobile apps, etc.)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       // In production, be more strict
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === "production") {
         callback(new Error("CORS policy violation"));
       } else {
         // In development, allow all origins
@@ -66,7 +66,7 @@ const corsOptions = {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-  optionsSuccessStatus: 200 // For legacy browser support
+  optionsSuccessStatus: 200, // For legacy browser support
 };
 
 app.use(cors(corsOptions));
@@ -110,14 +110,14 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 // Only start server if not in Vercel environment
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV}`);
     console.log(`🌐 CORS enabled for: ${process.env.ALLOWED_ORIGINS}`);
   });
 } else {
-  console.log('🚀 Velora API ready for serverless deployment');
+  console.log("🚀 Velora API ready for serverless deployment");
 }
 
 module.exports = app;
