@@ -42,7 +42,7 @@ CREATE TABLE articles (
   category VARCHAR(50) NOT NULL,
   image TEXT DEFAULT '/main/journal/journal.jpg',
   tags TEXT[] DEFAULT '{}',
-  author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  author_id UUID REFERENCES users(id) ON DELETE SET NULL,
   published BOOLEAN DEFAULT false,
   views INTEGER DEFAULT 0,
   read_time VARCHAR(20),
@@ -151,8 +151,11 @@ CREATE POLICY "Anyone can view published articles" ON articles
 CREATE POLICY "Authors can view own articles" ON articles
   FOR SELECT USING (auth.uid() = author_id);
 
+CREATE POLICY "System can insert articles" ON articles
+  FOR INSERT WITH CHECK (true);
+
 CREATE POLICY "Authors can insert own articles" ON articles
-  FOR INSERT WITH CHECK (auth.uid() = author_id);
+  FOR INSERT WITH CHECK (auth.uid() = author_id OR author_id IS NULL);
 
 CREATE POLICY "Authors can update own articles" ON articles
   FOR UPDATE USING (auth.uid() = author_id);

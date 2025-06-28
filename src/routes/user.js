@@ -337,57 +337,53 @@ router.put("/change-email", auth, changeEmailValidation, async (req, res) => {
 // @route   POST /api/users/upload-avatar
 // @desc    Upload profile picture
 // @access  Private
-router.post(
-  "/upload-avatar",
-  auth,
-  require("../middleware/upload").upload,
-  async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({
-          success: false,
-          message: "Tidak ada file yang diupload",
-        });
-      }
-
-      const imageUrl = `/uploads/${req.file.filename}`;
-
-      // Update user profile picture in database
-      const { data: updatedUser, error } = await supabase
-        .from("users")
-        .update({
-          profile_picture: imageUrl,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", req.user.userId)
-        .select("id, full_name, username, phone, email, profile_picture")
-        .single();
-
-      if (error) {
-        console.error("Upload avatar error:", error);
-        return res.status(500).json({
-          success: false,
-          message: "Gagal mengupdate foto profil",
-        });
-      }
-
-      res.json({
-        success: true,
-        message: "Foto profil berhasil diupload",
-        data: {
-          user: updatedUser,
-          imageUrl,
-        },
-      });
-    } catch (error) {
-      console.error("Upload avatar error:", error);
-      res.status(500).json({
+const { upload } = require("../middleware/upload");
+router.post("/upload-avatar", auth, upload, async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
         success: false,
-        message: "Server error",
+        message: "Tidak ada file yang diupload",
       });
     }
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+
+    // Update user profile picture in database
+    const { data: updatedUser, error } = await supabase
+      .from("users")
+      .update({
+        profile_picture: imageUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", req.user.userId)
+      .select("id, full_name, username, phone, email, profile_picture")
+      .single();
+
+    if (error) {
+      console.error("Upload avatar error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Gagal mengupdate foto profil",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Foto profil berhasil diupload",
+      data: {
+        user: updatedUser,
+        imageUrl,
+      },
+    });
+  } catch (error) {
+    console.error("Upload avatar error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
-);
+});
 
 // @route   DELETE /api/users/account
 // @desc    Delete user account

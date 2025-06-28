@@ -80,6 +80,11 @@ async function testLogin() {
 
 async function testGetProfile() {
   try {
+    if (!authToken) {
+      log("Get Profile - SKIPPED: No auth token available");
+      return false;
+    }
+    
     const response = await axios.get(`${BASE_URL}/api/users/profile`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
@@ -93,6 +98,11 @@ async function testGetProfile() {
 
 async function testHealthPrediction() {
   try {
+    if (!authToken) {
+      log("Health Prediction - SKIPPED: No auth token available");
+      return false;
+    }
+    
     const healthData = {
       Age: 25,
       SystolicBP: 120,
