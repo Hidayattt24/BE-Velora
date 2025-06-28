@@ -116,7 +116,7 @@ router.post("/predict", auth, healthDataValidation, async (req, res) => {
       .from("health_predictions")
       .insert([
         {
-          user_id: req.user.userId,
+          user_id: req.user.id,
           age: Age,
           systolic_bp: SystolicBP,
           diastolic_bp: DiastolicBP,
@@ -166,7 +166,7 @@ router.get("/history", auth, async (req, res) => {
     } = await supabase
       .from("health_predictions")
       .select("*", { count: "exact" })
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .order("created_at", { ascending: false })
       .range(offset, offset + limit - 1);
 
@@ -272,7 +272,7 @@ router.get("/statistics", auth, async (req, res) => {
     const { data: stats, error } = await supabase
       .from("health_predictions")
       .select("risk_level")
-      .eq("user_id", req.user.userId);
+      .eq("user_id", req.user.id);
 
     if (error) {
       console.error("Get statistics error:", error);

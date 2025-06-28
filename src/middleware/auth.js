@@ -29,15 +29,19 @@ const auth = async (req, res, next) => {
       });
     }
 
-    // Check if user is active
-    if (!user.is_active) {
+    // Check if user is deleted (soft delete)
+    if (user.deleted_at) {
       return res.status(401).json({
         success: false,
         message: "Akun tidak aktif",
       });
     }
 
-    req.user = user;
+    // Set user data with proper userId reference
+    req.user = {
+      ...user,
+      userId: user.id, // Ensure userId is properly set
+    };
     next();
   } catch (error) {
     console.error("Auth middleware error:", error);

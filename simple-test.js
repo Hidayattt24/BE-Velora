@@ -28,10 +28,13 @@ async function testBasicEndpoints() {
       fullName: "Test User",
       phone: "081999888777",
       email: "test123@example.com",
-      password: "TestPass123"
+      password: "TestPass123",
     };
-    
-    const register = await axios.post(`${BASE_URL}/api/auth/register`, testUser);
+
+    const register = await axios.post(
+      `${BASE_URL}/api/auth/register`,
+      testUser
+    );
     console.log("✅ Registration success:", register.data);
   } catch (error) {
     console.log("❌ Registration failed:");

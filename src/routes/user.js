@@ -66,7 +66,7 @@ router.get("/profile", auth, async (req, res) => {
         last_login
       `
       )
-      .eq("id", req.user.userId)
+      .eq("id", req.user.id)
       .single();
 
     if (error || !user) {
@@ -113,7 +113,7 @@ router.put("/profile", auth, updateProfileValidation, async (req, res) => {
         .from("users")
         .select("id")
         .eq("username", username)
-        .neq("id", req.user.userId)
+        .neq("id", req.user.id)
         .single();
 
       if (existingUser) {
@@ -130,7 +130,7 @@ router.put("/profile", auth, updateProfileValidation, async (req, res) => {
     const { data: updatedUser, error } = await supabase
       .from("users")
       .update(updateData)
-      .eq("id", req.user.userId)
+      .eq("id", req.user.id)
       .select(
         `
         id, 
@@ -190,7 +190,7 @@ router.put(
       const { data: user, error } = await supabase
         .from("users")
         .select("id, password_hash")
-        .eq("id", req.user.userId)
+        .eq("id", req.user.id)
         .single();
 
       if (error || !user) {
@@ -223,7 +223,7 @@ router.put(
           password_hash: hashedPassword,
           updated_at: new Date().toISOString(),
         })
-        .eq("id", req.user.userId);
+        .eq("id", req.user.id);
 
       if (updateError) {
         console.error("Change password error:", updateError);
@@ -267,7 +267,7 @@ router.put("/change-email", auth, changeEmailValidation, async (req, res) => {
     const { data: user, error } = await supabase
       .from("users")
       .select("id, email, password_hash")
-      .eq("id", req.user.userId)
+      .eq("id", req.user.id)
       .single();
 
     if (error || !user) {
@@ -291,7 +291,7 @@ router.put("/change-email", auth, changeEmailValidation, async (req, res) => {
       .from("users")
       .select("id")
       .eq("email", newEmail)
-      .neq("id", req.user.userId)
+      .neq("id", req.user.id)
       .single();
 
     if (existingUser) {
@@ -308,7 +308,7 @@ router.put("/change-email", auth, changeEmailValidation, async (req, res) => {
         email: newEmail,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", req.user.userId)
+      .eq("id", req.user.id)
       .select("id, full_name, username, phone, email, updated_at")
       .single();
 
@@ -356,7 +356,7 @@ router.post("/upload-avatar", auth, upload, async (req, res) => {
         profile_picture: imageUrl,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", req.user.userId)
+      .eq("id", req.user.id)
       .select("id, full_name, username, phone, email, profile_picture")
       .single();
 
@@ -403,7 +403,7 @@ router.delete("/account", auth, async (req, res) => {
     const { data: user, error } = await supabase
       .from("users")
       .select("id, password_hash")
-      .eq("id", req.user.userId)
+      .eq("id", req.user.id)
       .single();
 
     if (error || !user) {
@@ -430,7 +430,7 @@ router.delete("/account", auth, async (req, res) => {
         email: `deleted_${Date.now()}@example.com`, // Anonymize email
         phone: null,
       })
-      .eq("id", req.user.userId);
+      .eq("id", req.user.id);
 
     if (deleteError) {
       console.error("Delete account error:", deleteError);

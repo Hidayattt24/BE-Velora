@@ -59,7 +59,7 @@ router.get("/profile", auth, async (req, res) => {
     const { data: profile, error } = await supabase
       .from("pregnancy_profiles")
       .select("*")
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .single();
 
     if (error && error.code !== "PGRST116") {
@@ -117,7 +117,7 @@ router.post("/profile", auth, pregnancyProfileValidation, async (req, res) => {
     const { data: existingProfile } = await supabase
       .from("pregnancy_profiles")
       .select("id")
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .single();
 
     let profile, error;
@@ -135,7 +135,7 @@ router.post("/profile", auth, pregnancyProfileValidation, async (req, res) => {
           current_week: currentWeek,
           updated_at: new Date().toISOString(),
         })
-        .eq("user_id", req.user.userId)
+        .eq("user_id", req.user.id)
         .select()
         .single();
 
@@ -147,7 +147,7 @@ router.post("/profile", auth, pregnancyProfileValidation, async (req, res) => {
         .from("pregnancy_profiles")
         .insert([
           {
-            user_id: req.user.userId,
+            user_id: req.user.id,
             due_date,
             last_menstrual_period,
             current_weight,
@@ -195,7 +195,7 @@ router.get("/entries", auth, async (req, res) => {
     const { data: entries, error } = await supabase
       .from("timeline_entries")
       .select("*")
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .order("pregnancy_week", { ascending: false });
 
     if (error) {
@@ -245,7 +245,7 @@ router.post("/entries", auth, timelineValidation, async (req, res) => {
     const { data: existingEntry } = await supabase
       .from("timeline_entries")
       .select("id")
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .eq("pregnancy_week", pregnancy_week)
       .single();
 
@@ -274,7 +274,7 @@ router.post("/entries", auth, timelineValidation, async (req, res) => {
         .from("timeline_entries")
         .insert([
           {
-            user_id: req.user.userId,
+            user_id: req.user.id,
             pregnancy_week,
             health_services: health_services || {},
             symptoms: symptoms || {},
@@ -331,7 +331,7 @@ router.get("/entries/:week", auth, async (req, res) => {
     const { data: entry, error } = await supabase
       .from("timeline_entries")
       .select("*")
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .eq("pregnancy_week", pregnancyWeek)
       .single();
 
@@ -374,7 +374,7 @@ router.delete("/entries/:week", auth, async (req, res) => {
     const { error } = await supabase
       .from("timeline_entries")
       .delete()
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .eq("pregnancy_week", pregnancyWeek);
 
     if (error) {
@@ -558,14 +558,14 @@ router.get("/summary", auth, async (req, res) => {
     const { data: profile } = await supabase
       .from("pregnancy_profiles")
       .select("*")
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .single();
 
     // Get timeline entries
     const { data: entries } = await supabase
       .from("timeline_entries")
       .select("*")
-      .eq("user_id", req.user.userId);
+      .eq("user_id", req.user.id);
 
     // Calculate statistics
     const totalWeeksTracked = entries ? entries.length : 0;

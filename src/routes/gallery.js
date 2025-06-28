@@ -39,7 +39,7 @@ router.get("/photos", auth, async (req, res) => {
     } = await supabase
       .from("gallery_photos")
       .select("*", { count: "exact" })
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .order("created_at", { ascending: false })
       .range(offset, offset + limit - 1);
 
@@ -83,7 +83,7 @@ router.get("/photos/:id", auth, async (req, res) => {
       .from("gallery_photos")
       .select("*")
       .eq("id", id)
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .single();
 
     if (error || !photo) {
@@ -139,7 +139,7 @@ router.post(
         .from("gallery_photos")
         .insert([
           {
-            user_id: req.user.userId,
+            user_id: req.user.id,
             image_url: imageUrl,
             title: title || "Foto Kehamilan",
             description,
@@ -206,7 +206,7 @@ router.put("/photos/:id", auth, galleryValidation, async (req, res) => {
       });
     }
 
-    if (existingPhoto.user_id !== req.user.userId) {
+    if (existingPhoto.user_id !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: "Anda tidak memiliki akses untuk mengedit foto ini",
@@ -274,7 +274,7 @@ router.delete("/photos/:id", auth, async (req, res) => {
       });
     }
 
-    if (existingPhoto.user_id !== req.user.userId) {
+    if (existingPhoto.user_id !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: "Anda tidak memiliki akses untuk menghapus foto ini",
@@ -318,7 +318,7 @@ router.get("/stats", auth, async (req, res) => {
     const { data: photos, error } = await supabase
       .from("gallery_photos")
       .select("pregnancy_week, file_size")
-      .eq("user_id", req.user.userId);
+      .eq("user_id", req.user.id);
 
     if (error) {
       console.error("Get gallery stats error:", error);
@@ -363,7 +363,7 @@ router.get("/timeline", auth, async (req, res) => {
     const { data: photos, error } = await supabase
       .from("gallery_photos")
       .select("*")
-      .eq("user_id", req.user.userId)
+      .eq("user_id", req.user.id)
       .not("pregnancy_week", "is", null)
       .order("pregnancy_week", { ascending: true })
       .order("created_at", { ascending: false });

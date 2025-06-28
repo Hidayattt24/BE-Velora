@@ -84,7 +84,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", auth, userRoutes);
 app.use("/api/health", auth, healthRoutes);
-app.use("/api/journal", auth, journalRoutes);
+app.use("/api/journal", journalRoutes); // Remove auth middleware - routes handle their own auth
 app.use("/api/gallery", auth, galleryRoutes);
 app.use("/api/timeline", auth, timelineRoutes);
 

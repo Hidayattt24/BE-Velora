@@ -426,7 +426,7 @@ router.get("/me", require("../middleware/auth"), async (req, res) => {
     const { data: user, error } = await supabase
       .from("users")
       .select("id, full_name, phone, email, created_at, updated_at, last_login")
-      .eq("id", req.user.userId)
+      .eq("id", req.user.id) // Use req.user.id instead of req.user.userId
       .single();
 
     if (error || !user) {

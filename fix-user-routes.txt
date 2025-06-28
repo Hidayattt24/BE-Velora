@@ -1,0 +1,22 @@
+// Quick fix for user.js - replace all req.user.userId with req.user.id
+// Run this as a find and replace operation
+
+// Before: req.user.userId
+// After: req.user.id
+
+// Lines to replace:
+// Line 69: .eq("id", req.user.userId)
+// Line 116: .neq("id", req.user.userId)
+// Line 133: .eq("id", req.user.userId)
+// Line 193: .eq("id", req.user.userId)
+// Line 226: .eq("id", req.user.userId);
+// Line 270: .eq("id", req.user.userId)
+// Line 294: .neq("id", req.user.userId)
+// Line 311: .eq("id", req.user.userId)
+// Line 359: .eq("id", req.user.userId)
+// Line 406: .eq("id", req.user.userId)
+// Line 433: .eq("id", req.user.userId);
+
+// Manual replacement needed:
+// Find: req.user.userId
+// Replace with: req.user.id
