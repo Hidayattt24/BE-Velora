@@ -54,9 +54,9 @@ const corsOptions = {
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      // In production, be more strict
+      // In production, allow all origins for now (you can restrict later)
       if (process.env.NODE_ENV === "production") {
-        callback(new Error("CORS policy violation"));
+        callback(null, true); // Allow all origins for debugging
       } else {
         // In development, allow all origins
         callback(null, true);
