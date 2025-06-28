@@ -45,41 +45,40 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 
 ## 🌐 Deployment
 
-### Production URL
-- **API**: `https://your-api-domain.vercel.app`
-- **Health Check**: `https://your-api-domain.vercel.app/health`
+### 🚀 Deploy via Vercel Dashboard (Recommended)
 
-### Quick Deploy to Vercel
+**Quick Setup:**
+1. Push code ke GitHub
+2. Import project di [vercel.com](https://vercel.com)
+3. Set environment variables
+4. Deploy!
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/be-velora)
+📖 **Complete Guide**: [DEPLOY_VIA_WEB.md](./DEPLOY_VIA_WEB.md)  
+📋 **Environment Variables**: [ENV_VARIABLES_CHECKLIST.md](./ENV_VARIABLES_CHECKLIST.md)
 
-### Manual Deployment
+### Prerequisites
 
-1. **Setup Supabase Database**
+1. **Supabase Setup**
+   - Create project and setup database
+   - Run SQL scripts in `database/` folder
+   - Get API credentials
+
+2. **GitHub Repository**
    ```bash
-   # Run SQL scripts in order:
-   # 1. database/schema.sql
-   # 2. database/sample_data.sql
-   # 3. database/fix-rls-policies.sql
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
    ```
 
-2. **Deploy to Vercel**
-   ```bash
-   npm install -g vercel
-   vercel login
-   vercel --prod
-   ```
+### Environment Variables Required
 
-3. **Set Environment Variables**
-   ```bash
-   vercel env add SUPABASE_URL
-   vercel env add SUPABASE_ANON_KEY
-   vercel env add SUPABASE_SERVICE_ROLE_KEY
-   vercel env add JWT_SECRET
-   vercel env add ALLOWED_ORIGINS
-   ```
+- `SUPABASE_URL` - Your Supabase project URL
+- `SUPABASE_ANON_KEY` - Supabase anon public key  
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
+- `JWT_SECRET` - 32+ character secret for JWT tokens
+- `ALLOWED_ORIGINS` - Frontend domain for CORS
 
-📖 **Full Deployment Guide**: [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
+� **Full list**: [ENV_VARIABLES_CHECKLIST.md](./ENV_VARIABLES_CHECKLIST.md)
 
 ## 📦 Installation
 
