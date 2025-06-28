@@ -6,9 +6,20 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
+    "build": "echo 'Build completed'",
     "test": "jest",
+    "test:api": "node test-api.js",
+    "test:simple": "node simple-test.js",
+    "test:quick": "node quick-test.js",
+    "test:comprehensive": "node comprehensive-test.js",
+    "test:production": "API_URL=https://your-api-domain.vercel.app node comprehensive-test.js",
+    "test:deployment": "node test-deployment.js",
     "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix"
+    "lint:fix": "eslint src/ --fix",
+    "vercel-build": "echo 'Vercel build completed'",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "setup-env": "chmod +x setup-env.sh && ./setup-env.sh"
   },
   "keywords": [
     "maternal",

@@ -5,27 +5,23 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 ## 🚀 Features
 
 - **Authentication & Authorization**
-
   - User registration & login
   - JWT-based authentication
   - Password reset dengan OTP
   - Profile management
 
 - **Health Risk Prediction**
-
   - Integrasi dengan ML API untuk prediksi risiko kesehatan
   - Riwayat prediksi
   - Statistik kesehatan
 
 - **Journal Articles**
-
   - CRUD operations untuk artikel
   - Bookmark sistem
   - Kategori dan pencarian
   - Pagination
 
 - **Gallery Management**
-
   - Upload foto kehamilan
   - Optimasi gambar otomatis
   - Timeline foto berdasarkan minggu kehamilan
@@ -45,6 +41,45 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 - **Validation**: express-validator
 - **Security**: Helmet, CORS, Rate limiting
 - **Email**: Nodemailer
+- **Deployment**: Vercel (Serverless)
+
+## 🌐 Deployment
+
+### Production URL
+- **API**: `https://your-api-domain.vercel.app`
+- **Health Check**: `https://your-api-domain.vercel.app/health`
+
+### Quick Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/be-velora)
+
+### Manual Deployment
+
+1. **Setup Supabase Database**
+   ```bash
+   # Run SQL scripts in order:
+   # 1. database/schema.sql
+   # 2. database/sample_data.sql
+   # 3. database/fix-rls-policies.sql
+   ```
+
+2. **Deploy to Vercel**
+   ```bash
+   npm install -g vercel
+   vercel login
+   vercel --prod
+   ```
+
+3. **Set Environment Variables**
+   ```bash
+   vercel env add SUPABASE_URL
+   vercel env add SUPABASE_ANON_KEY
+   vercel env add SUPABASE_SERVICE_ROLE_KEY
+   vercel env add JWT_SECRET
+   vercel env add ALLOWED_ORIGINS
+   ```
+
+📖 **Full Deployment Guide**: [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
 
 ## 📦 Installation
 
@@ -106,7 +141,58 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
 
    Server akan berjalan di `http://localhost:5000`
 
-## 📚 API Documentation
+## 🧪 Testing
+
+### Run All Tests
+```bash
+# Test locally
+npm run test:comprehensive
+
+# Test production deployment
+npm run test:production
+```
+
+### Individual Tests
+```bash
+# Health check
+npm run test:quick
+
+# API endpoints
+npm run test:api
+
+# Simple connectivity
+npm run test:simple
+```
+
+### Manual Testing
+Test the API with tools like Postman or curl:
+```bash
+# Health check
+curl https://your-api-domain.vercel.app/health
+
+# Register user
+curl -X POST https://your-api-domain.vercel.app/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"fullName":"Test User","email":"test@example.com","phone":"081234567890","password":"TestPassword123","confirmPassword":"TestPassword123"}'
+```
+
+## 📖 API Documentation
+
+📚 **Complete API Documentation**: [API_DOCUMENTATION.md](./API_DOCUMENTATION.md)
+
+### Quick Reference
+
+**Base URL**: `https://your-api-domain.vercel.app`
+
+**Authentication**: Bearer Token in Authorization header
+
+### Main Endpoints
+- `GET /health` - Health check
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/journal/articles` - Get articles
+- `GET /api/gallery/photos` - Get user photos
+- `GET /api/timeline/milestones` - Get pregnancy milestones
 
 ### Authentication Endpoints
 

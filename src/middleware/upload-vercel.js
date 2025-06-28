@@ -1,40 +1,9 @@
 const multer = require("multer");
 const sharp = require("sharp");
-const path = require("path");
-const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
-const os = require("os");
 
-// Use /tmp directory for Vercel serverless environment
-const uploadDir = process.env.VERCEL ? os.tmpdir() : path.join(__dirname, "../../uploads");
-
-// Ensure upload directory exists (only for local development)
-if (!process.env.VERCEL && !fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Storage configuration with serverless support
-const getStorageConfig = () => {
-  if (process.env.VERCEL) {
-    // For Vercel, use memory storage and handle files in memory
-    return multer.memoryStorage();
-  } else {
-    // For local development, use disk storage
-    return multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, uploadDir);
-      },
-      filename: (req, file, cb) => {
-        const uniqueSuffix = uuidv4();
-        const ext = path.extname(file.originalname);
-        cb(null, `${Date.now()}-${uniqueSuffix}${ext}`);
-      },
-    });
-  }
-};
-
-// Configure multer for file upload
-const storage = getStorageConfig();
+// Use memory storage for Vercel serverless environment
+const storage = multer.memoryStorage();
 
 // File filter function
 const fileFilter = (req, file, cb) => {
@@ -63,6 +32,32 @@ const upload = multer({
     files: 1, // Only allow one file at a time
   },
 });
+
+// Process image in memory for Vercel
+const processImageBuffer = async (buffer, mimetype) => {
+  try {
+    let sharpInstance = sharp(buffer);
+    
+    // Resize if too large
+    sharpInstance = sharpInstance.resize(1200, 1200, {
+      fit: "inside",
+      withoutEnlargement: true,
+    });
+
+    // Convert to JPEG for better compression
+    const processedBuffer = await sharpInstance
+      .jpeg({
+        quality: 85,
+        progressive: true,
+      })
+      .toBuffer();
+
+    return processedBuffer;
+  } catch (error) {
+    console.error("Image processing error:", error);
+    return buffer; // Return original if processing fails
+  }
+};
 
 // Middleware to handle single file upload with image processing
 const uploadMiddleware = (req, res, next) => {
@@ -96,39 +91,23 @@ const uploadMiddleware = (req, res, next) => {
     }
 
     try {
-      // Process image with Sharp for optimization
-      const inputPath = req.file.path;
-      const outputPath = path.join(uploadDir, `optimized-${req.file.filename}`);
-
-      // Optimize image: resize if too large, compress, and convert to WebP for better compression
-      await sharp(inputPath)
-        .resize(1200, 1200, {
-          fit: "inside",
-          withoutEnlargement: true,
-        })
-        .jpeg({
-          quality: 85,
-          progressive: true,
-        })
-        .toFile(outputPath);
-
-      // Delete original file
-      fs.unlinkSync(inputPath);
-
-      // Update file info
-      req.file.path = outputPath;
-      req.file.filename = `optimized-${req.file.filename}`;
-
-      // Get optimized file stats
-      const stats = fs.statSync(outputPath);
-      req.file.size = stats.size;
+      // Process image buffer
+      const processedBuffer = await processImageBuffer(req.file.buffer, req.file.mimetype);
+      
+      // Generate unique filename
+      const uniqueFilename = `${Date.now()}-${uuidv4()}.jpg`;
+      
+      // Update file info with processed data
+      req.file.buffer = processedBuffer;
+      req.file.size = processedBuffer.length;
+      req.file.filename = uniqueFilename;
+      req.file.mimetype = "image/jpeg";
 
       next();
     } catch (imageError) {
       console.error("Image processing error:", imageError);
-
-      // If image processing fails, continue with original file
-      // In production, you might want to handle this differently
+      // Continue with original file if processing fails
+      req.file.filename = `${Date.now()}-${uuidv4()}.jpg`;
       next();
     }
   });
@@ -170,31 +149,15 @@ const multipleUploadMiddleware = (req, res, next) => {
       const processedFiles = [];
 
       for (const file of req.files) {
-        const inputPath = file.path;
-        const outputPath = path.join(uploadDir, `optimized-${file.filename}`);
+        const processedBuffer = await processImageBuffer(file.buffer, file.mimetype);
+        const uniqueFilename = `${Date.now()}-${uuidv4()}.jpg`;
 
-        // Optimize image
-        await sharp(inputPath)
-          .resize(1200, 1200, {
-            fit: "inside",
-            withoutEnlargement: true,
-          })
-          .jpeg({
-            quality: 85,
-            progressive: true,
-          })
-          .toFile(outputPath);
-
-        // Delete original file
-        fs.unlinkSync(inputPath);
-
-        // Update file info
-        const stats = fs.statSync(outputPath);
         processedFiles.push({
           ...file,
-          path: outputPath,
-          filename: `optimized-${file.filename}`,
-          size: stats.size,
+          buffer: processedBuffer,
+          filename: uniqueFilename,
+          size: processedBuffer.length,
+          mimetype: "image/jpeg",
         });
       }
 
@@ -202,8 +165,11 @@ const multipleUploadMiddleware = (req, res, next) => {
       next();
     } catch (imageError) {
       console.error("Image processing error:", imageError);
-
       // Continue with original files if processing fails
+      req.files = req.files.map(file => ({
+        ...file,
+        filename: `${Date.now()}-${uuidv4()}.jpg`
+      }));
       next();
     }
   });
@@ -242,4 +208,5 @@ module.exports = {
   upload: uploadMiddleware,
   multipleUpload: multipleUploadMiddleware,
   uploadErrorHandler,
+  processImageBuffer, // Export for use in routes
 };
