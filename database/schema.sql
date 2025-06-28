@@ -234,26 +234,17 @@ CREATE TRIGGER update_pregnancy_profiles_updated_at BEFORE UPDATE ON pregnancy_p
 CREATE TRIGGER update_timeline_entries_updated_at BEFORE UPDATE ON timeline_entries
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Insert some sample articles
-INSERT INTO articles (title, content, excerpt, category, author_id, published, read_time) VALUES
-('Tips Mengatasi Mual Morning Sickness', 
- 'Morning sickness adalah kondisi yang sangat umum dialami oleh ibu hamil, terutama pada trimester pertama. Berikut adalah beberapa tips yang dapat membantu mengatasi mual dan muntah saat hamil...',
- 'Cara alami dan efektif untuk mengurangi rasa mual di trimester pertama kehamilan.',
- 'Trimester 1',
- (SELECT id FROM users LIMIT 1),
- true,
- '5 min read'),
-('Nutrisi Penting untuk Trimester Kedua',
- 'Trimester kedua adalah masa yang penting untuk memastikan asupan nutrisi yang tepat bagi perkembangan janin. Pada periode ini, kebutuhan kalori dan nutrisi ibu hamil meningkat...',
- 'Panduan lengkap nutrisi yang dibutuhkan selama trimester kedua kehamilan.',
- 'Nutrition',
- (SELECT id FROM users LIMIT 1),
- true,
- '7 min read'),
-('Persiapan Persalinan: Apa yang Harus Diketahui',
- 'Menjelang persalinan, ada banyak hal yang perlu dipersiapkan oleh calon ibu. Mulai dari persiapan fisik, mental, hingga perlengkapan yang dibutuhkan...',
- 'Panduan komprehensif untuk mempersiapkan diri menghadapi persalinan.',
- 'Trimester 3',
- (SELECT id FROM users LIMIT 1),
- true,
- '10 min read');
+-- Schema setup complete!
+-- Sample data will be inserted through the API when users register and create content.
+
+-- Note: To insert sample articles later (after creating users through registration):
+-- You can use queries like this:
+-- 
+-- INSERT INTO articles (title, content, excerpt, category, author_id, published, read_time) VALUES
+-- ('Tips Mengatasi Mual Morning Sickness', 
+--  'Morning sickness adalah kondisi yang sangat umum dialami oleh ibu hamil...',
+--  'Cara alami dan efektif untuk mengurangi rasa mual di trimester pertama kehamilan.',
+--  'Trimester 1',
+--  'your-user-id-here',
+--  true,
+--  '5 min read');

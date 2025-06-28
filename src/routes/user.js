@@ -340,7 +340,7 @@ router.put("/change-email", auth, changeEmailValidation, async (req, res) => {
 router.post(
   "/upload-avatar",
   auth,
-  require("../middleware/upload"),
+  require("../middleware/upload").upload,
   async (req, res) => {
     try {
       if (!req.file) {

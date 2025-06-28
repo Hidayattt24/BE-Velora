@@ -112,7 +112,7 @@ router.get("/photos/:id", auth, async (req, res) => {
 router.post(
   "/upload",
   auth,
-  require("../middleware/upload"),
+  require("../middleware/upload").upload,
   galleryValidation,
   async (req, res) => {
     try {
