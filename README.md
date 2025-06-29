@@ -122,12 +122,6 @@ Backend API untuk aplikasi Velora - platform kesehatan ibu hamil yang comprehens
    JWT_SECRET=your_super_secret_jwt_key_here
    JWT_EXPIRES_IN=7d
 
-   # Email Configuration
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=your_email@gmail.com
-   SMTP_PASS=your_app_password
-
    # External APIs
    ML_API_URL=https://dayattttt2444-maternal-health-risk.hf.space
    ```
@@ -473,10 +467,6 @@ npm run lint:fix     # Fix ESLint errors
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key            | Yes                |
 | `JWT_SECRET`                | JWT signing secret                   | Yes                |
 | `JWT_EXPIRES_IN`            | JWT expiration time                  | No (default: 7d)   |
-| `SMTP_HOST`                 | Email server host                    | Yes                |
-| `SMTP_PORT`                 | Email server port                    | Yes                |
-| `SMTP_USER`                 | Email username                       | Yes                |
-| `SMTP_PASS`                 | Email password                       | Yes                |
 | `ML_API_URL`                | Machine Learning API URL             | Yes                |
 | `ALLOWED_ORIGINS`           | CORS allowed origins                 | Yes                |
 

@@ -201,19 +201,6 @@ async function testPregnancyProfile() {
   }
 }
 
-async function testForgotPassword() {
-  try {
-    const response = await axios.post(`${BASE_URL}/api/auth/forgot-password`, {
-      email: testUser.email,
-    });
-    log("Forgot Password - SUCCESS", response.data);
-    return true;
-  } catch (error) {
-    handleError(error, "Forgot Password");
-    return false;
-  }
-}
-
 // Main test runner
 async function runAllTests() {
   console.log("🚀 Starting Velora Backend API Tests\n");
@@ -229,7 +216,6 @@ async function runAllTests() {
     { name: "Create Article", fn: testCreateArticle },
     { name: "Get Health Parameters", fn: testGetHealthParameters },
     { name: "Create Pregnancy Profile", fn: testPregnancyProfile },
-    { name: "Forgot Password", fn: testForgotPassword },
   ];
 
   let passed = 0;
@@ -303,6 +289,5 @@ module.exports = {
   testCreateArticle,
   testGetHealthParameters,
   testPregnancyProfile,
-  testForgotPassword,
   runAllTests,
 };

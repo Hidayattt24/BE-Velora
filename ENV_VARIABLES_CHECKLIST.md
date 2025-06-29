@@ -88,34 +88,6 @@ image/jpeg,image/png,image/webp
 
 ## 📧 EMAIL CONFIGURATION (Untuk Reset Password)
 
-### SMTP_HOST
-
-```
-smtp.gmail.com
-```
-
-### SMTP_PORT
-
-```
-587
-```
-
-### SMTP_USER
-
-```
-your-email@gmail.com
-```
-
-_Gmail yang sudah enable App Password_
-
-### SMTP_PASS
-
-```
-your-16-character-app-password
-```
-
-_App Password dari Google Account, bukan password biasa_
-
 ### FROM_EMAIL
 
 ```

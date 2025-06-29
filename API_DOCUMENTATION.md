@@ -116,50 +116,6 @@ Login pengguna.
 }
 ```
 
-### POST /api/auth/forgot-password
-
-Meminta reset password.
-
-**Request Body:**
-
-```json
-{
-  "email": "user@example.com"
-}
-```
-
-**Response Success (200):**
-
-```json
-{
-  "success": true,
-  "message": "Link reset password telah dikirim ke email Anda"
-}
-```
-
-### POST /api/auth/reset-password
-
-Reset password dengan token.
-
-**Request Body:**
-
-```json
-{
-  "token": "reset_token",
-  "newPassword": "NewPassword123",
-  "confirmPassword": "NewPassword123"
-}
-```
-
-**Response Success (200):**
-
-```json
-{
-  "success": true,
-  "message": "Password berhasil direset"
-}
-```
-
 ---
 
 ## User Endpoints
@@ -805,12 +761,6 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 # JWT Configuration
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=7d
-
-# Email Configuration
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_email
-SMTP_PASS=your_password
 
 # CORS Configuration
 ALLOWED_ORIGINS=https://your-frontend.vercel.app

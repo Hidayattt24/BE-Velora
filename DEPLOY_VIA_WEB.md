@@ -96,22 +96,6 @@ Setelah deployment pertama, Anda perlu menambahkan environment variables:
    Value: https://your-ml-api.vercel.app
    Environment: Production, Preview, Development
 
-   Variable Name: SMTP_HOST
-   Value: smtp.gmail.com
-   Environment: Production, Preview, Development
-
-   Variable Name: SMTP_PORT
-   Value: 587
-   Environment: Production, Preview, Development
-
-   Variable Name: SMTP_USER
-   Value: your-email@gmail.com
-   Environment: Production, Preview, Development
-
-   Variable Name: SMTP_PASS
-   Value: your-app-password
-   Environment: Production, Preview, Development
-
    Variable Name: FROM_EMAIL
    Value: noreply@velora.app
    Environment: Production, Preview, Development
@@ -183,16 +167,6 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 # Method 3: Manual
 # Buat string random minimal 32 karakter
 ```
-
-### SMTP Configuration (Optional)
-
-Untuk fitur reset password via email:
-
-**Gmail Setup:**
-
-1. Enable 2-Factor Authentication
-2. Generate App Password di Google Account settings
-3. Gunakan app password untuk `SMTP_PASS`
 
 ## 🧪 Testing Deployment
 
