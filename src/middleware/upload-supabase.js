@@ -72,8 +72,21 @@ const processImageBuffer = async (buffer, mimetype) => {
 // Upload file to Supabase Storage
 const uploadToSupabaseStorage = async (buffer, filename, mimetype) => {
   try {
+    console.log("Starting upload to Supabase Storage:", {
+      filename,
+      mimetype,
+      bufferSize: buffer.length,
+    });
+
     const bucketName = "gallery-photos";
     const filePath = `uploads/${filename}`;
+
+    // Check if Supabase client is properly configured
+    if (!supabase) {
+      throw new Error("Supabase client not configured");
+    }
+
+    console.log("Uploading to bucket:", bucketName, "path:", filePath);
 
     // Upload to Supabase Storage
     const { data, error } = await supabase.storage
@@ -88,6 +101,8 @@ const uploadToSupabaseStorage = async (buffer, filename, mimetype) => {
       throw new Error(`Failed to upload to storage: ${error.message}`);
     }
 
+    console.log("Upload successful:", data);
+
     // Get public URL
     const { data: publicUrlData } = supabase.storage
       .from(bucketName)
@@ -96,6 +111,8 @@ const uploadToSupabaseStorage = async (buffer, filename, mimetype) => {
     if (!publicUrlData?.publicUrl) {
       throw new Error("Failed to get public URL from storage");
     }
+
+    console.log("Public URL generated:", publicUrlData.publicUrl);
 
     return {
       publicUrl: publicUrlData.publicUrl,

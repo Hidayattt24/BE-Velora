@@ -169,3 +169,58 @@ SELECT * FROM pg_policies WHERE schemaname = 'storage' AND tablename = 'objects'
 2. Verify bucket dan policies sudah setup
 3. Cek network connectivity
 4. Periksa console log untuk detail error
+
+### Error 500 saat Upload Foto
+
+Jika mendapat error 500 dengan pesan "Gagal mengunggah file ke storage", ikuti langkah debug ini:
+
+#### 1. Test Supabase Storage Setup
+
+Jalankan script test di backend:
+
+```bash
+cd be-velora
+node test-storage.js
+```
+
+Script ini akan mengecek:
+
+- ✅ Koneksi Supabase client
+- ✅ Keberadaan bucket 'gallery-photos'
+- ✅ Permission upload ke bucket
+- ✅ Public URL generation
+
+#### 2. Cek Environment Variables
+
+Pastikan backend memiliki semua env vars:
+
+```env
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # Required for storage
+```
+
+#### 3. Verifikasi Bucket dan Policies
+
+Di Supabase Dashboard:
+
+- **Storage > gallery-photos** harus exist
+- **Policies** harus ada 4 policies untuk INSERT, SELECT, UPDATE, DELETE
+- Test upload manual via Dashboard
+
+#### 4. Fallback ke Upload Lokal
+
+Jika Supabase Storage bermasalah, gunakan fallback route:
+
+```javascript
+// Ganti di gallery.js line 113
+require("../middleware/upload-vercel").upload; // atau upload.js
+```
+
+#### 5. Check Backend Logs
+
+Di Vercel Dashboard atau console logs untuk melihat error detail:
+
+- Storage upload errors
+- Database insert errors
+- Middleware errors
