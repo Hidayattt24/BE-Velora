@@ -107,8 +107,12 @@ router.post("/register", registerValidation, async (req, res) => {
     // Generate JWT token
     const token = generateToken(newUser.id);
 
-    // Return user data without password
-    const { password_hash, ...userData } = newUser;
+    // Return user data without password and format field names for frontend
+    const { password_hash, full_name, ...rest } = newUser;
+    const userData = {
+      ...rest,
+      fullName: full_name, // Convert full_name to fullName for frontend compatibility
+    };
 
     res.status(201).json({
       success: true,
@@ -175,8 +179,12 @@ router.post("/login", loginValidation, async (req, res) => {
     // Generate JWT token
     const token = generateToken(user.id);
 
-    // Return user data without password
-    const { password_hash, ...userData } = user;
+    // Return user data without password and format field names for frontend
+    const { password_hash, full_name, ...rest } = user;
+    const userData = {
+      ...rest,
+      fullName: full_name, // Convert full_name to fullName for frontend compatibility
+    };
 
     res.json({
       success: true,
@@ -213,9 +221,16 @@ router.get("/me", require("../middleware/auth"), async (req, res) => {
       });
     }
 
+    // Format field names for frontend compatibility
+    const { full_name, ...rest } = user;
+    const userData = {
+      ...rest,
+      fullName: full_name, // Convert full_name to fullName for frontend compatibility
+    };
+
     res.json({
       success: true,
-      data: { user },
+      data: { user: userData },
     });
   } catch (error) {
     console.error("Get profile error:", error);
@@ -244,9 +259,16 @@ router.get("/validate", require("../middleware/auth"), async (req, res) => {
       });
     }
 
+    // Format field names for frontend compatibility
+    const { full_name, ...rest } = user;
+    const userData = {
+      ...rest,
+      fullName: full_name, // Convert full_name to fullName for frontend compatibility
+    };
+
     res.json({
       success: true,
-      data: { user },
+      data: { user: userData },
     });
   } catch (error) {
     console.error("Validate token error:", error);
