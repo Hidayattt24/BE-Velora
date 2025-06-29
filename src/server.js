@@ -45,7 +45,9 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [
       "http://localhost:3000",
+      "http://localhost:3001",
       "https://localhost:3000",
+      "https://localhost:3001",
     ];
 
     // Allow requests with no origin (mobile apps, etc.)
@@ -140,8 +142,21 @@ app.use("/api/journal", journalRoutes); // Remove auth middleware - routes handl
 app.use("/api/gallery", auth, galleryRoutes);
 app.use("/api/timeline", auth, timelineRoutes);
 
-// Serve static files
-app.use("/uploads", express.static("uploads"));
+// Serve static files with CORS headers
+app.use("/uploads", (req, res, next) => {
+  // Set CORS headers for images
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+}, express.static("uploads"));
 
 // Error handling middleware
 app.use(notFound);
