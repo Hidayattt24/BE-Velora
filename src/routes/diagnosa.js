@@ -50,10 +50,13 @@ router.post("/predict", auth, healthRiskValidation, async (req, res) => {
   try {
     console.log("=== DIAGNOSA API DEBUG ===");
     console.log("Request body:", JSON.stringify(req.body, null, 2));
-    
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log("Validation errors:", JSON.stringify(errors.array(), null, 2));
+      console.log(
+        "Validation errors:",
+        JSON.stringify(errors.array(), null, 2)
+      );
       return res.status(400).json({
         success: false,
         message: "Data tidak valid",
@@ -281,6 +284,15 @@ router.get("/stats", auth, async (req, res) => {
 
     const latestPrediction = stats.length > 0 ? stats[0] : null;
 
+    // Safely calculate dominant risk level
+    const riskLevelKeys = Object.keys(riskLevelCounts);
+    const dominantRiskLevel =
+      riskLevelKeys.length > 0
+        ? riskLevelKeys.reduce((a, b) =>
+            riskLevelCounts[a] > riskLevelCounts[b] ? a : b
+          )
+        : "low risk";
+
     res.json({
       success: true,
       data: {
@@ -294,10 +306,7 @@ router.get("/stats", auth, async (req, res) => {
         latest_prediction: latestPrediction,
         trends: {
           last_30_days: recentPredictions.length,
-          dominant_risk_level:
-            Object.keys(riskLevelCounts).reduce((a, b) =>
-              riskLevelCounts[a] > riskLevelCounts[b] ? a : b
-            ) || "low risk",
+          dominant_risk_level: dominantRiskLevel,
         },
       },
     });
