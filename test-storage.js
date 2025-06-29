@@ -1,7 +1,30 @@
+// Load environment variables
+require('dotenv').config();
+
+const { createClient } = require('@supabase/supabase-js');
+
+// Create admin client for storage testing (needs service role key)
+const supabaseAdmin = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+);
+
+// Regular client for general testing
 const { supabase } = require("./src/config/database");
 
 async function testSupabaseStorage() {
   console.log("Testing Supabase Storage setup...");
+  console.log("Environment check:");
+  console.log("- SUPABASE_URL:", process.env.SUPABASE_URL ? "✓ Set" : "✗ Missing");
+  console.log("- SUPABASE_ANON_KEY:", process.env.SUPABASE_ANON_KEY ? "✓ Set" : "✗ Missing");
+  console.log("- SUPABASE_SERVICE_ROLE_KEY:", process.env.SUPABASE_SERVICE_ROLE_KEY ? "✓ Set" : "✗ Missing");
+  console.log("");
 
   try {
     // Test 1: Check if Supabase client is working
@@ -10,10 +33,10 @@ async function testSupabaseStorage() {
     console.log("Supabase client status:", authError ? "ERROR" : "OK");
     if (authError) console.log("Auth error:", authError.message);
 
-    // Test 2: List buckets
+    // Test 2: List buckets (using admin client for storage operations)
     console.log("\n2. Listing storage buckets...");
     const { data: buckets, error: bucketsError } =
-      await supabase.storage.listBuckets();
+      await supabaseAdmin.storage.listBuckets();
 
     if (bucketsError) {
       console.log("Buckets error:", bucketsError.message);
@@ -28,7 +51,7 @@ async function testSupabaseStorage() {
 
     // Test 3: Try to access gallery-photos bucket
     console.log("\n3. Testing gallery-photos bucket access...");
-    const { data: files, error: filesError } = await supabase.storage
+    const { data: files, error: filesError } = await supabaseAdmin.storage
       .from("gallery-photos")
       .list();
 
@@ -43,7 +66,7 @@ async function testSupabaseStorage() {
     const testBuffer = Buffer.from("test file content");
     const testFileName = `test-${Date.now()}.txt`;
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
       .from("gallery-photos")
       .upload(`uploads/${testFileName}`, testBuffer, {
         contentType: "text/plain",
@@ -55,14 +78,14 @@ async function testSupabaseStorage() {
       console.log("Upload test successful:", uploadData.path);
 
       // Test 5: Get public URL
-      const { data: urlData } = supabase.storage
+      const { data: urlData } = supabaseAdmin.storage
         .from("gallery-photos")
         .getPublicUrl(`uploads/${testFileName}`);
 
       console.log("Public URL:", urlData.publicUrl);
 
       // Cleanup test file
-      await supabase.storage
+      await supabaseAdmin.storage
         .from("gallery-photos")
         .remove([`uploads/${testFileName}`]);
       console.log("Test file cleaned up");

@@ -1,6 +1,21 @@
 const multer = require("multer");
 const sharp = require("sharp");
 const { v4: uuidv4 } = require("uuid");
+const { createClient } = require('@supabase/supabase-js');
+
+// Create admin client for storage operations (requires service role key)
+const supabaseStorage = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+);
+
+// Regular client for other operations
 const { supabase } = require("../config/database");
 
 // Use memory storage for file upload
@@ -81,15 +96,15 @@ const uploadToSupabaseStorage = async (buffer, filename, mimetype) => {
     const bucketName = "gallery-photos";
     const filePath = `uploads/${filename}`;
 
-    // Check if Supabase client is properly configured
-    if (!supabase) {
-      throw new Error("Supabase client not configured");
+    // Check if Supabase storage client is properly configured
+    if (!supabaseStorage) {
+      throw new Error("Supabase storage client not configured");
     }
 
     console.log("Uploading to bucket:", bucketName, "path:", filePath);
 
-    // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
+    // Upload to Supabase Storage using admin client
+    const { data, error } = await supabaseStorage.storage
       .from(bucketName)
       .upload(filePath, buffer, {
         contentType: mimetype,
@@ -103,8 +118,8 @@ const uploadToSupabaseStorage = async (buffer, filename, mimetype) => {
 
     console.log("Upload successful:", data);
 
-    // Get public URL
-    const { data: publicUrlData } = supabase.storage
+    // Get public URL using admin client
+    const { data: publicUrlData } = supabaseStorage.storage
       .from(bucketName)
       .getPublicUrl(filePath);
 
