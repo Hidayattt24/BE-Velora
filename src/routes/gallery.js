@@ -133,7 +133,7 @@ router.post(
       }
 
       const { title, description, pregnancy_week } = req.body;
-      
+
       // Use the public URL from Supabase Storage instead of local path
       const imageUrl = req.file.publicUrl || `/uploads/${req.file.filename}`;
 

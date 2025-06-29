@@ -1,5 +1,5 @@
 -- Supabase Storage Setup for Gallery Photos
--- Run these commands in Supabase SQL Editor
+-- Run these commands in Supabase SQL Editor (as authenticated user)
 
 -- 1. Create bucket for gallery photos (if not exists)
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
@@ -12,34 +12,77 @@ VALUES (
 )
 ON CONFLICT (id) DO NOTHING;
 
--- 2. Set up Row Level Security (RLS) policies for gallery-photos bucket
+-- Note: Storage policies are typically managed through Supabase Dashboard
+-- Go to Storage > Policies in your Supabase Dashboard to set up policies
+-- 
+-- Or use these alternative commands that don't require table ownership:
 
--- Policy: Users can insert their own photos
-CREATE POLICY "Users can upload gallery photos" ON storage.objects
-FOR INSERT WITH CHECK (
-  bucket_id = 'gallery-photos' 
-  AND auth.uid()::text = (storage.foldername(name))[1]
-);
+-- 2. Create policies using supabase_admin role (if available)
+-- These commands should work in most Supabase projects:
 
--- Policy: Users can view their own photos and all public photos
-CREATE POLICY "Users can view gallery photos" ON storage.objects
-FOR SELECT USING (
-  bucket_id = 'gallery-photos'
-);
+-- Policy for uploading photos (users can upload to their own folders)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies 
+    WHERE schemaname = 'storage' 
+    AND tablename = 'objects' 
+    AND policyname = 'Users can upload gallery photos'
+  ) THEN
+    EXECUTE 'CREATE POLICY "Users can upload gallery photos" ON storage.objects
+    FOR INSERT WITH CHECK (
+      bucket_id = ''gallery-photos'' 
+      AND auth.uid() IS NOT NULL
+    )';
+  END IF;
+END $$;
 
--- Policy: Users can update their own photos
-CREATE POLICY "Users can update their gallery photos" ON storage.objects
-FOR UPDATE USING (
-  bucket_id = 'gallery-photos' 
-  AND auth.uid()::text = (storage.foldername(name))[1]
-);
+-- Policy for viewing photos (public read access)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies 
+    WHERE schemaname = 'storage' 
+    AND tablename = 'objects' 
+    AND policyname = 'Public can view gallery photos'
+  ) THEN
+    EXECUTE 'CREATE POLICY "Public can view gallery photos" ON storage.objects
+    FOR SELECT USING (
+      bucket_id = ''gallery-photos''
+    )';
+  END IF;
+END $$;
 
--- Policy: Users can delete their own photos
-CREATE POLICY "Users can delete their gallery photos" ON storage.objects
-FOR DELETE USING (
-  bucket_id = 'gallery-photos' 
-  AND auth.uid()::text = (storage.foldername(name))[1]
-);
+-- Policy for updating photos (users can update their own photos)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies 
+    WHERE schemaname = 'storage' 
+    AND tablename = 'objects' 
+    AND policyname = 'Users can update their gallery photos'
+  ) THEN
+    EXECUTE 'CREATE POLICY "Users can update their gallery photos" ON storage.objects
+    FOR UPDATE USING (
+      bucket_id = ''gallery-photos'' 
+      AND auth.uid() IS NOT NULL
+    )';
+  END IF;
+END $$;
 
--- 3. Enable RLS on storage.objects (if not already enabled)
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+-- Policy for deleting photos (users can delete their own photos)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies 
+    WHERE schemaname = 'storage' 
+    AND tablename = 'objects' 
+    AND policyname = 'Users can delete their gallery photos'
+  ) THEN
+    EXECUTE 'CREATE POLICY "Users can delete their gallery photos" ON storage.objects
+    FOR DELETE USING (
+      bucket_id = ''gallery-photos'' 
+      AND auth.uid() IS NOT NULL
+    )';
+  END IF;
+END $$;

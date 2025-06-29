@@ -19,7 +19,9 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
   } else {
     cb(
-      new Error("Tipe file tidak didukung. Gunakan JPEG, PNG, WebP, atau HEIC."),
+      new Error(
+        "Tipe file tidak didukung. Gunakan JPEG, PNG, WebP, atau HEIC."
+      ),
       false
     );
   }
@@ -169,7 +171,10 @@ const uploadMiddleware = (req, res, next) => {
       return res.status(500).json({
         success: false,
         message: "Gagal mengunggah file ke storage. Silakan coba lagi.",
-        error: process.env.NODE_ENV === "development" ? uploadError.message : undefined,
+        error:
+          process.env.NODE_ENV === "development"
+            ? uploadError.message
+            : undefined,
       });
     }
   });
@@ -242,8 +247,12 @@ const multipleUploadMiddleware = (req, res, next) => {
       console.error("Multiple files upload error:", uploadError);
       return res.status(500).json({
         success: false,
-        message: "Gagal mengunggah beberapa file ke storage. Silakan coba lagi.",
-        error: process.env.NODE_ENV === "development" ? uploadError.message : undefined,
+        message:
+          "Gagal mengunggah beberapa file ke storage. Silakan coba lagi.",
+        error:
+          process.env.NODE_ENV === "development"
+            ? uploadError.message
+            : undefined,
       });
     }
   });
