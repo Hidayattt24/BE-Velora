@@ -10,7 +10,6 @@ require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const healthRoutes = require("./routes/health");
-const journalRoutes = require("./routes/journal");
 const galleryRoutes = require("./routes/gallery");
 const timelineRoutes = require("./routes/timeline");
 const diagnosaRoutes = require("./routes/diagnosa");
@@ -98,7 +97,6 @@ app.get("/", (req, res) => {
       auth: "/api/auth/*",
       users: "/api/users/*",
       health_prediction: "/api/health/*",
-      journal: "/api/journal/*",
       gallery: "/api/gallery/*",
       timeline: "/api/timeline/*",
       diagnosa: "/api/diagnosa/*",
@@ -113,7 +111,7 @@ app.get("/docs", (req, res) => {
   const fs = require("fs");
 
   try {
-    const docsPath = path.join(__dirname, "../docs.html");
+    const docsPath = path.join(__dirname, "../docs/docs.html");
     const docsContent = fs.readFileSync(docsPath, "utf8");
     res.setHeader("Content-Type", "text/html");
     res.send(docsContent);
@@ -140,7 +138,6 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", auth, userRoutes);
 app.use("/api/health", auth, healthRoutes);
-app.use("/api/journal", journalRoutes); // Remove auth middleware - routes handle their own auth
 app.use("/api/gallery", auth, galleryRoutes);
 app.use("/api/timeline", timelineRoutes); // Remove auth middleware - routes handle their own auth
 app.use("/api/diagnosa", diagnosaRoutes); // Diagnosa routes handle their own auth

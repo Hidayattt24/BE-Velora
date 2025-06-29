@@ -115,3 +115,15 @@ Thumbs.db
 # Upload directories
 uploads/
 public/uploads/
+
+# Test results and outputs
+tests/results/
+tests/logs/
+
+# Scripts output and logs
+scripts/logs/
+scripts/output/
+
+# Backup files
+*.backup
+*.bak
