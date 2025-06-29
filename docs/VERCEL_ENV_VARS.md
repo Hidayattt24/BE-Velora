@@ -26,7 +26,7 @@ ALLOWED_IMAGE_TYPES=image/jpeg,image/png,image/webp,image/heic
 ## Langkah-langkah Setup di Vercel:
 
 1. Buka Vercel Dashboard
-2. Pilih project `be-velora`  
+2. Pilih project `be-velora`
 3. Go to Settings > Environment Variables
 4. Add semua variables di atas satu per satu
 5. Redeploy project
@@ -34,6 +34,7 @@ ALLOWED_IMAGE_TYPES=image/jpeg,image/png,image/webp,image/heic
 ## Verifikasi:
 
 Setelah deploy, test dengan:
+
 - Frontend upload foto
 - Check console logs di Vercel Functions
 - Verify image URL di database menggunakan Supabase public URL

@@ -228,14 +228,15 @@ Di Vercel Dashboard atau console logs untuk melihat error detail:
 ## ✅ SOLUTION VERIFIED - Storage Working!
 
 ### Test Results (29 Juni 2025):
+
 ```
 Environment check:
-- SUPABASE_URL: ✓ Set  
+- SUPABASE_URL: ✓ Set
 - SUPABASE_ANON_KEY: ✓ Set
 - SUPABASE_SERVICE_ROLE_KEY: ✓ Set
 
 2. Listing storage buckets...
-Available buckets: [ 'gallery-photos' ]  
+Available buckets: [ 'gallery-photos' ]
 Gallery-photos bucket exists: true
 
 3. Testing gallery-photos bucket access...
@@ -246,12 +247,48 @@ Image upload test: SUCCESS ✓
 ```
 
 ### ✅ **Fixes Applied:**
+
 1. **Service Role Key**: Menggunakan `SUPABASE_SERVICE_ROLE_KEY` untuk storage operations
 2. **Admin Client**: Created separate admin client for storage dengan proper permissions
 3. **Environment Loading**: Fixed `test-storage.js` untuk load `.env` dengan benar
 4. **Bucket Configuration**: Bucket `gallery-photos` sudah dibuat dan berfungsi
 
 ### 🚀 **Next Steps for Deployment:**
+
 1. **Set Environment Variables** di Vercel (lihat `VERCEL_ENV_VARS.md`)
 2. **Deploy backend** dengan changes terbaru
 3. **Test upload** di frontend production
+
+## ✅ PROFILE PICTURE UPLOAD FIXED!
+
+### Problem Identified:
+The profile picture upload route `/api/users/upload-avatar` was still using the old middleware (`upload.js`) instead of the Supabase Storage middleware (`upload-supabase.js`).
+
+### Fix Applied:
+```javascript
+// OLD:
+const { upload } = require("../middleware/upload");
+
+// NEW: 
+const { upload } = require("../middleware/upload-supabase");
+```
+
+### Test Results (29 Juni 2025):
+```
+Testing avatar upload to gallery-photos bucket...
+✅ Avatar upload successful: uploads/avatar-test-1751215711841.png
+✅ Avatar public URL: https://baisblpccyajqfasyicx.supabase.co/storage/v1/object/public/gallery-photos/uploads/avatar-test-1751215711841.png
+✅ URL format correct for frontend: true
+✅ URL validation: PASS
+✅ Test file cleaned up
+
+Avatar Upload Test Results:
+Status: ✅ SUCCESS
+Backend ready for avatar uploads: YES
+```
+
+### Routes Now Fixed:
+1. ✅ **Gallery Photos:** `POST /api/gallery/upload`
+2. ✅ **Profile Pictures:** `POST /api/users/upload-avatar`
+
+Both now use Supabase Storage and generate proper public URLs.

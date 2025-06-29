@@ -1,7 +1,7 @@
 const multer = require("multer");
 const sharp = require("sharp");
 const { v4: uuidv4 } = require("uuid");
-const { createClient } = require('@supabase/supabase-js');
+const { createClient } = require("@supabase/supabase-js");
 
 // Create admin client for storage operations (requires service role key)
 const supabaseStorage = createClient(
@@ -10,8 +10,8 @@ const supabaseStorage = createClient(
   {
     auth: {
       autoRefreshToken: false,
-      persistSession: false
-    }
+      persistSession: false,
+    },
   }
 );
 

@@ -337,7 +337,7 @@ router.put("/change-email", auth, changeEmailValidation, async (req, res) => {
 // @route   POST /api/users/upload-avatar
 // @desc    Upload profile picture
 // @access  Private
-const { upload } = require("../middleware/upload");
+const { upload } = require("../middleware/upload-supabase");
 router.post("/upload-avatar", auth, upload, async (req, res) => {
   try {
     if (!req.file) {
@@ -347,7 +347,8 @@ router.post("/upload-avatar", auth, upload, async (req, res) => {
       });
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`;
+    // Use the public URL from Supabase Storage instead of local path
+    const imageUrl = req.file.publicUrl || `/uploads/${req.file.filename}`;
 
     // Update user profile picture in database
     const { data: updatedUser, error } = await supabase
