@@ -13,6 +13,7 @@ const healthRoutes = require("./routes/health");
 const journalRoutes = require("./routes/journal");
 const galleryRoutes = require("./routes/gallery");
 const timelineRoutes = require("./routes/timeline");
+const diagnosaRoutes = require("./routes/diagnosa");
 
 // Import middleware
 const errorHandler = require("./middleware/errorHandler");
@@ -100,6 +101,7 @@ app.get("/", (req, res) => {
       journal: "/api/journal/*",
       gallery: "/api/gallery/*",
       timeline: "/api/timeline/*",
+      diagnosa: "/api/diagnosa/*",
     },
     timestamp: new Date().toISOString(),
   });
@@ -141,6 +143,7 @@ app.use("/api/health", auth, healthRoutes);
 app.use("/api/journal", journalRoutes); // Remove auth middleware - routes handle their own auth
 app.use("/api/gallery", auth, galleryRoutes);
 app.use("/api/timeline", timelineRoutes); // Remove auth middleware - routes handle their own auth
+app.use("/api/diagnosa", diagnosaRoutes); // Diagnosa routes handle their own auth
 
 // Serve static files with CORS headers
 app.use(
