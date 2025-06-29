@@ -112,7 +112,7 @@ router.get("/photos/:id", auth, async (req, res) => {
 router.post(
   "/upload",
   auth,
-  require("../middleware/upload").upload,
+  require("../middleware/upload-supabase").upload,
   galleryValidation,
   async (req, res) => {
     try {
@@ -133,7 +133,9 @@ router.post(
       }
 
       const { title, description, pregnancy_week } = req.body;
-      const imageUrl = `/uploads/${req.file.filename}`;
+      
+      // Use the public URL from Supabase Storage instead of local path
+      const imageUrl = req.file.publicUrl || `/uploads/${req.file.filename}`;
 
       const { data: photo, error } = await supabase
         .from("gallery_photos")
@@ -146,6 +148,8 @@ router.post(
             pregnancy_week: pregnancy_week ? parseInt(pregnancy_week) : null,
             file_size: req.file.size,
             file_type: req.file.mimetype,
+            storage_path: req.file.storagePath || null,
+            storage_bucket: req.file.bucket || null,
             created_at: new Date().toISOString(),
           },
         ])
@@ -260,10 +264,10 @@ router.delete("/photos/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Check if photo belongs to user
+    // Check if photo belongs to user and get storage info
     const { data: existingPhoto, error: checkError } = await supabase
       .from("gallery_photos")
-      .select("user_id, image_url")
+      .select("user_id, image_url, storage_path, storage_bucket")
       .eq("id", id)
       .single();
 
@@ -281,6 +285,7 @@ router.delete("/photos/:id", auth, async (req, res) => {
       });
     }
 
+    // Delete from database first
     const { error } = await supabase
       .from("gallery_photos")
       .delete()
@@ -292,6 +297,23 @@ router.delete("/photos/:id", auth, async (req, res) => {
         success: false,
         message: "Gagal menghapus foto",
       });
+    }
+
+    // Try to delete from Supabase Storage if storage info exists
+    if (existingPhoto.storage_path && existingPhoto.storage_bucket) {
+      try {
+        const { error: storageError } = await supabase.storage
+          .from(existingPhoto.storage_bucket)
+          .remove([existingPhoto.storage_path]);
+
+        if (storageError) {
+          console.warn("Failed to delete from storage:", storageError);
+          // Don't fail the request if storage deletion fails
+        }
+      } catch (storageDeleteError) {
+        console.warn("Storage deletion error:", storageDeleteError);
+        // Continue even if storage deletion fails
+      }
     }
 
     // Note: In production, you might want to also delete the physical file
