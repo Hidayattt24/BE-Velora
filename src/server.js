@@ -140,23 +140,30 @@ app.use("/api/users", auth, userRoutes);
 app.use("/api/health", auth, healthRoutes);
 app.use("/api/journal", journalRoutes); // Remove auth middleware - routes handle their own auth
 app.use("/api/gallery", auth, galleryRoutes);
-app.use("/api/timeline", auth, timelineRoutes);
+app.use("/api/timeline", timelineRoutes); // Remove auth middleware - routes handle their own auth
 
 // Serve static files with CORS headers
-app.use("/uploads", (req, res, next) => {
-  // Set CORS headers for images
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.header("Cross-Origin-Resource-Policy", "cross-origin");
-  
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-}, express.static("uploads"));
+app.use(
+  "/uploads",
+  (req, res, next) => {
+    // Set CORS headers for images
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    res.header("Cross-Origin-Resource-Policy", "cross-origin");
+
+    // Handle preflight requests
+    if (req.method === "OPTIONS") {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  },
+  express.static("uploads")
+);
 
 // Error handling middleware
 app.use(notFound);

@@ -400,64 +400,81 @@ router.delete("/entries/:week", auth, async (req, res) => {
 
 // @route   GET /api/timeline/health-services
 // @desc    Get available health services data
-// @access  Public
+// @access  Public (no auth required)
 router.get("/health-services", async (req, res) => {
   try {
+    // Health services data based on Buku KIA 2024 - sesuai dengan frontend
     const healthServices = [
       {
         id: "bloodPressure",
         title: "Pengukuran Tekanan Darah",
         description:
-          "Monitoring tekanan darah secara rutin untuk mendeteksi hipertensi",
+          "Pemeriksaan tekanan darah untuk memantau risiko preeklampsia",
         recommendedWeeks: [
-          4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38,
-          40,
+          8, 12, 16, 20, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
         ],
       },
       {
-        id: "weightMeasurement",
-        title: "Pengukuran Berat Badan",
-        description: "Monitoring pertambahan berat badan ibu hamil",
+        id: "weightCheck",
+        title: "Penimbangan Berat Badan",
+        description: "Pemantauan pertambahan berat badan selama kehamilan",
         recommendedWeeks: [
-          4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38,
-          40,
+          8, 12, 16, 20, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
         ],
+      },
+      {
+        id: "fundusHeight",
+        title: "Pengukuran Tinggi Fundus Uteri",
+        description:
+          "Pemeriksaan tinggi rahim untuk memantau pertumbuhan janin",
+        recommendedWeeks: [12, 16, 20, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40],
+      },
+      {
+        id: "fetalHeartRate",
+        title: "Pemeriksaan Denyut Jantung Janin (DJJ)",
+        description:
+          "Pemantauan detak jantung janin untuk memastikan kesehatan janin",
+        recommendedWeeks: [12, 16, 20, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40],
+      },
+      {
+        id: "fetalPosition",
+        title: "Pemeriksaan Presentasi Janin",
+        description: "Pemeriksaan posisi janin dalam kandungan",
+        recommendedWeeks: [28, 30, 32, 34, 36, 37, 38, 39, 40],
+      },
+      {
+        id: "bloodTest",
+        title: "Pemeriksaan Laboratorium (Hb)",
+        description: "Tes darah untuk memeriksa kadar hemoglobin",
+        recommendedWeeks: [8, 28],
       },
       {
         id: "urineTest",
         title: "Pemeriksaan Urine",
-        description: "Deteksi protein dalam urine dan infeksi saluran kemih",
-        recommendedWeeks: [6, 12, 20, 28, 36],
+        description: "Tes urine untuk mendeteksi protein dan glukosa",
+        recommendedWeeks: [8, 20, 28, 36],
       },
       {
-        id: "bloodTest",
-        title: "Pemeriksaan Darah",
-        description: "Pemeriksaan kadar hemoglobin dan deteksi anemia",
-        recommendedWeeks: [8, 20, 32],
-      },
-      {
-        id: "ultrasound",
-        title: "USG (Ultrasonografi)",
-        description: "Pemeriksaan perkembangan janin dan deteksi kelainan",
-        recommendedWeeks: [8, 20, 32],
-      },
-      {
-        id: "fetalHeartRate",
-        title: "Pemeriksaan Detak Jantung Janin",
-        description: "Monitoring kesehatan janin melalui detak jantung",
-        recommendedWeeks: [12, 16, 20, 24, 28, 32, 36, 40],
-      },
-      {
-        id: "immunization",
-        title: "Imunisasi TT (Tetanus Toxoid)",
-        description: "Perlindungan terhadap tetanus untuk ibu dan bayi",
+        id: "ttImmunization",
+        title: "Imunisasi TT",
+        description: "Vaksinasi Tetanus Toxoid sesuai status imunisasi",
         recommendedWeeks: [16, 20],
       },
       {
-        id: "ironSupplements",
-        title: "Pemberian Tablet Fe",
+        id: "ironTablets",
+        title: "Pemberian Tablet Tambah Darah",
         description: "Suplemen zat besi untuk mencegah anemia",
-        recommendedWeeks: [16, 20, 24, 28, 32, 36],
+        recommendedWeeks: [
+          8, 12, 16, 20, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
+        ],
+      },
+      {
+        id: "counseling",
+        title: "Konseling/Nasihat",
+        description: "Konsultasi tentang kehamilan, persalinan, dan menyusui",
+        recommendedWeeks: [
+          8, 12, 16, 20, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
+        ],
       },
     ];
 
@@ -476,63 +493,95 @@ router.get("/health-services", async (req, res) => {
 
 // @route   GET /api/timeline/symptoms
 // @desc    Get available symptoms data
-// @access  Public
+// @access  Public (no auth required)
 router.get("/symptoms", async (req, res) => {
   try {
+    // Symptoms data including danger signs based on KIA guidelines - sesuai dengan frontend
     const symptoms = [
+      // Danger signs (based on KIA book)
       {
-        id: "nausea",
-        title: "Mual dan Muntah",
-        description: "Morning sickness atau mual sepanjang hari",
-        isDanger: false,
+        id: "bleeding",
+        title: "Perdarahan",
+        description: "Perdarahan pervaginam dalam jumlah sedikit hingga banyak",
+        isDanger: true,
       },
       {
-        id: "fatigue",
-        title: "Kelelahan",
-        description: "Merasa sangat lelah atau mengantuk",
-        isDanger: false,
+        id: "severeHeadache",
+        title: "Sakit Kepala Hebat",
+        description: "Sakit kepala yang tidak biasa dan sangat mengganggu",
+        isDanger: true,
       },
       {
-        id: "backPain",
-        title: "Sakit Punggung",
-        description: "Nyeri pada punggung bagian bawah",
-        isDanger: false,
+        id: "blurredVision",
+        title: "Gangguan Penglihatan",
+        description: "Penglihatan kabur atau melihat titik-titik berkedip",
+        isDanger: true,
       },
       {
         id: "swelling",
-        title: "Pembengkakan",
-        description: "Pembengkakan pada kaki, tangan, atau wajah",
+        title: "Bengkak Wajah & Tangan",
+        description: "Pembengkakan pada wajah, tangan, atau seluruh tubuh",
         isDanger: true,
       },
       {
-        id: "bleeding",
-        title: "Pendarahan",
-        description: "Pendarahan dari vagina",
-        isDanger: true,
-      },
-      {
-        id: "severePain",
-        title: "Nyeri Perut Hebat",
-        description: "Nyeri perut yang sangat hebat atau kram",
-        isDanger: true,
-      },
-      {
-        id: "headache",
-        title: "Sakit Kepala Berat",
-        description: "Sakit kepala hebat yang tidak hilang",
-        isDanger: true,
-      },
-      {
-        id: "visionChanges",
-        title: "Gangguan Penglihatan",
-        description: "Penglihatan kabur atau melihat bintik-bintik",
+        id: "fever",
+        title: "Demam Tinggi",
+        description: "Suhu tubuh >38°C",
         isDanger: true,
       },
       {
         id: "reducedMovement",
         title: "Gerakan Janin Berkurang",
-        description: "Gerakan janin yang berkurang drastis",
+        description: "Gerakan janin berkurang atau tidak ada",
         isDanger: true,
+      },
+      {
+        id: "waterBreaking",
+        title: "Ketuban Pecah",
+        description: "Air ketuban keluar dari jalan lahir",
+        isDanger: true,
+      },
+      {
+        id: "abdominalPain",
+        title: "Nyeri Perut Hebat",
+        description: "Nyeri perut yang hebat dan tidak kunjung hilang",
+        isDanger: true,
+      },
+      {
+        id: "easyTiring",
+        title: "Mudah Lelah",
+        description: "Merasa lelah yang berlebihan",
+        isDanger: false,
+      },
+      {
+        id: "nausea",
+        title: "Mual & Muntah",
+        description: "Morning sickness atau mual-muntah ringan",
+        isDanger: false,
+      },
+      {
+        id: "fatigue",
+        title: "Kelelahan",
+        description: "Mudah lelah dan mengantuk",
+        isDanger: false,
+      },
+      {
+        id: "heartburn",
+        title: "Heartburn",
+        description: "Rasa panas/nyeri di dada akibat asam lambung",
+        isDanger: false,
+      },
+      {
+        id: "constipation",
+        title: "Sembelit",
+        description: "Kesulitan buang air besar",
+        isDanger: false,
+      },
+      {
+        id: "backPain",
+        title: "Nyeri Punggung",
+        description: "Nyeri di punggung bagian bawah",
+        isDanger: false,
       },
     ];
 
