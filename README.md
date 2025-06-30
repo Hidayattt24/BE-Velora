@@ -36,6 +36,7 @@
 <td width="50%">
 
 ### 🔐 **Authentication & Security**
+
 - JWT-based authentication dengan refresh tokens
 - Password hashing dengan bcrypt
 - Rate limiting untuk mencegah abuse
@@ -43,12 +44,14 @@
 - Input validation & sanitization
 
 ### 👤 **User Management**
+
 - Registrasi & login pengguna
 - Profil management dengan foto upload
 - Data kehamilan & medical records
 - Privacy settings & data export
 
 ### 🏥 **Health Prediction AI**
+
 - Prediksi risiko kesehatan (84.21% akurasi)
 - Integrasi dengan ML model di HuggingFace
 - Riwayat prediksi & tracking
@@ -58,18 +61,21 @@
 <td width="50%">
 
 ### 📸 **Gallery Management**
+
 - Upload foto/video ke Supabase Storage
 - Resize & optimize gambar otomatis
 - Organisasi berdasarkan tanggal & kategori
 - Bulk operations & metadata extraction
 
 ### 📅 **Timeline Tracking**
+
 - Milestone kehamilan per minggu
 - Progress tracking & reminder
 - Custom events & appointments
 - Data visualization ready
 
 ### 🔄 **Real-time Features**
+
 - WebSocket support untuk notifikasi
 - Live data synchronization
 - Push notifications (planning)
@@ -82,6 +88,7 @@
 ## 🏗️ Arsitektur & Struktur
 
 ### **Project Structure**
+
 ```
 be-velora/
 ├── 📂 api/                     # Vercel serverless functions
@@ -127,9 +134,10 @@ be-velora/
 ```
 
 ### **Database Schema Overview**
+
 ```sql
 Users              → Authentication & profile data
-UserProfiles       → Detailed pregnancy information  
+UserProfiles       → Detailed pregnancy information
 HealthPredictions  → AI prediction history
 Gallery            → Photo/video metadata
 Timeline           → Pregnancy milestones
@@ -139,6 +147,7 @@ UserSessions       → JWT session management
 ## � Quick Start
 
 ### **Prerequisites**
+
 ```bash
 Node.js 18.0.0+
 npm 9.0.0+
@@ -149,41 +158,47 @@ Supabase Account (untuk database)
 ### **Local Development Setup**
 
 1. **Clone Repository**
+
    ```bash
    git clone https://github.com/Hidayattt24/be-velora.git
    cd be-velora
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Environment Configuration**
+
    ```bash
    cp .env.example .env
    # Edit .env dengan konfigurasi yang sesuai
    ```
 
 4. **Database Setup**
+
    ```bash
    # Import schema ke Supabase
    npm run db:setup
-   
+
    # Atau manual import file database/schema.sql
    ```
 
 5. **Run Development Server**
+
    ```bash
    npm run dev
    # Server berjalan di http://localhost:5000
    ```
 
 6. **Test API Endpoints**
+
    ```bash
    # Test basic endpoints
    npm run test:api
-   
+
    # Comprehensive testing
    npm run test:comprehensive
    ```
@@ -191,6 +206,7 @@ Supabase Account (untuk database)
 ### **Production Deployment**
 
 #### **Deploy ke Vercel (Recommended)**
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -200,9 +216,11 @@ vercel --prod
 ```
 
 #### **Environment Variables di Vercel**
+
 Set environment variables berikut di Vercel Dashboard:
+
 - `SUPABASE_URL`
-- `SUPABASE_ANON_KEY` 
+- `SUPABASE_ANON_KEY`
 - `JWT_SECRET`
 - `ML_API_URL`
 - Dan semua variabel lainnya dari `.env.example`
@@ -238,64 +256,72 @@ npm run docs:generate # Generate API documentation
 ## 🌐 API Endpoints
 
 ### **Base URL**
+
 - **Production**: `https://api-velora.vercel.app`
 - **Development**: `http://localhost:5000`
 
 ### **Core System**
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/` | Welcome message & API info | ❌ |
-| `GET` | `/health` | Health check & system status | ❌ |
-| `GET` | `/docs` | Interactive API documentation | ❌ |
+
+| Method | Endpoint  | Description                   | Auth Required |
+| ------ | --------- | ----------------------------- | ------------- |
+| `GET`  | `/`       | Welcome message & API info    | ❌            |
+| `GET`  | `/health` | Health check & system status  | ❌            |
+| `GET`  | `/docs`   | Interactive API documentation | ❌            |
 
 ### **Authentication** 🔐
-| Method | Endpoint | Description | Body Required |
-|--------|----------|-------------|---------------|
-| `POST` | `/api/auth/register` | Registrasi pengguna baru | ✅ |
-| `POST` | `/api/auth/login` | Login pengguna | ✅ |
-| `POST` | `/api/auth/refresh` | Refresh JWT token | ✅ |
-| `POST` | `/api/auth/logout` | Logout & invalidate token | ✅ |
-| `POST` | `/api/auth/forgot-password` | Request reset password | ✅ |
-| `POST` | `/api/auth/reset-password` | Reset password dengan OTP | ✅ |
+
+| Method | Endpoint                    | Description               | Body Required |
+| ------ | --------------------------- | ------------------------- | ------------- |
+| `POST` | `/api/auth/register`        | Registrasi pengguna baru  | ✅            |
+| `POST` | `/api/auth/login`           | Login pengguna            | ✅            |
+| `POST` | `/api/auth/refresh`         | Refresh JWT token         | ✅            |
+| `POST` | `/api/auth/logout`          | Logout & invalidate token | ✅            |
+| `POST` | `/api/auth/forgot-password` | Request reset password    | ✅            |
+| `POST` | `/api/auth/reset-password`  | Reset password dengan OTP | ✅            |
 
 ### **User Management** 👤
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/api/users/profile` | Get user profile | ✅ |
-| `PUT` | `/api/users/profile` | Update user profile | ✅ |
-| `POST` | `/api/users/upload-avatar` | Upload profile picture | ✅ |
-| `DELETE` | `/api/users/account` | Delete user account | ✅ |
+
+| Method   | Endpoint                   | Description            | Auth Required |
+| -------- | -------------------------- | ---------------------- | ------------- |
+| `GET`    | `/api/users/profile`       | Get user profile       | ✅            |
+| `PUT`    | `/api/users/profile`       | Update user profile    | ✅            |
+| `POST`   | `/api/users/upload-avatar` | Upload profile picture | ✅            |
+| `DELETE` | `/api/users/account`       | Delete user account    | ✅            |
 
 ### **Health Prediction** 🏥
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `POST` | `/api/health/predict` | Prediksi risiko kesehatan | ✅ |
-| `GET` | `/api/health/history` | Riwayat prediksi pengguna | ✅ |
-| `GET` | `/api/health/history/:id` | Detail prediksi tertentu | ✅ |
-| `POST` | `/api/health/export-pdf` | Export laporan PDF | ✅ |
+
+| Method | Endpoint                  | Description               | Auth Required |
+| ------ | ------------------------- | ------------------------- | ------------- |
+| `POST` | `/api/health/predict`     | Prediksi risiko kesehatan | ✅            |
+| `GET`  | `/api/health/history`     | Riwayat prediksi pengguna | ✅            |
+| `GET`  | `/api/health/history/:id` | Detail prediksi tertentu  | ✅            |
+| `POST` | `/api/health/export-pdf`  | Export laporan PDF        | ✅            |
 
 ### **Gallery Management** 📸
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/api/gallery` | Get all user photos/videos | ✅ |
-| `POST` | `/api/gallery/upload` | Upload new media file | ✅ |
-| `PUT` | `/api/gallery/:id` | Update media metadata | ✅ |
-| `DELETE` | `/api/gallery/:id` | Delete media file | ✅ |
+
+| Method   | Endpoint              | Description                | Auth Required |
+| -------- | --------------------- | -------------------------- | ------------- |
+| `GET`    | `/api/gallery`        | Get all user photos/videos | ✅            |
+| `POST`   | `/api/gallery/upload` | Upload new media file      | ✅            |
+| `PUT`    | `/api/gallery/:id`    | Update media metadata      | ✅            |
+| `DELETE` | `/api/gallery/:id`    | Delete media file          | ✅            |
 
 ### **Timeline Tracking** 📅
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/api/timeline` | Get pregnancy timeline | ✅ |
-| `POST` | `/api/timeline/milestone` | Add new milestone | ✅ |
-| `PUT` | `/api/timeline/milestone/:id` | Update milestone | ✅ |
-| `DELETE` | `/api/timeline/milestone/:id` | Delete milestone | ✅ |
+
+| Method   | Endpoint                      | Description            | Auth Required |
+| -------- | ----------------------------- | ---------------------- | ------------- |
+| `GET`    | `/api/timeline`               | Get pregnancy timeline | ✅            |
+| `POST`   | `/api/timeline/milestone`     | Add new milestone      | ✅            |
+| `PUT`    | `/api/timeline/milestone/:id` | Update milestone       | ✅            |
+| `DELETE` | `/api/timeline/milestone/:id` | Delete milestone       | ✅            |
 
 ### **Diagnosis & Recommendations** 🔍
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `POST` | `/api/diagnosa/analyze` | Analyze symptoms | ✅ |
-| `GET` | `/api/diagnosa/recommendations` | Get health recommendations | ✅ |
-| `GET` | `/api/diagnosa/history` | Diagnosis history | ✅ |
+
+| Method | Endpoint                        | Description                | Auth Required |
+| ------ | ------------------------------- | -------------------------- | ------------- |
+| `POST` | `/api/diagnosa/analyze`         | Analyze symptoms           | ✅            |
+| `GET`  | `/api/diagnosa/recommendations` | Get health recommendations | ✅            |
+| `GET`  | `/api/diagnosa/history`         | Diagnosis history          | ✅            |
 
 ## 🔧 Environment Variables
 
@@ -342,12 +368,14 @@ OTP_EXPIRES_IN=600000
 ## � Performance & Monitoring
 
 ### **Performance Metrics**
+
 - **Response Time**: < 200ms average
 - **Uptime**: 99.9% target
 - **Throughput**: 1000+ requests/minute
 - **Database Connections**: Optimized pooling
 
 ### **Monitoring & Logging**
+
 ```bash
 # Health check endpoint
 curl https://api-velora.vercel.app/health
@@ -363,6 +391,7 @@ curl https://api-velora.vercel.app/health
 ```
 
 ### **Rate Limiting**
+
 - **Window**: 15 minutes
 - **Max Requests**: 100 per IP
 - **Headers**: `X-RateLimit-*` included in responses
@@ -374,11 +403,13 @@ curl https://api-velora.vercel.app/health
 ### **API Testing dengan cURL**
 
 #### **Health Check**
+
 ```bash
 curl -X GET https://api-velora.vercel.app/health
 ```
 
 #### **User Registration**
+
 ```bash
 curl -X POST https://api-velora.vercel.app/api/auth/register \
   -H "Content-Type: application/json" \
@@ -391,6 +422,7 @@ curl -X POST https://api-velora.vercel.app/api/auth/register \
 ```
 
 #### **User Login**
+
 ```bash
 curl -X POST https://api-velora.vercel.app/api/auth/login \
   -H "Content-Type: application/json" \
@@ -401,6 +433,7 @@ curl -X POST https://api-velora.vercel.app/api/auth/login \
 ```
 
 #### **Health Prediction (with auth)**
+
 ```bash
 curl -X POST https://api-velora.vercel.app/api/health/predict \
   -H "Content-Type: application/json" \
@@ -416,6 +449,7 @@ curl -X POST https://api-velora.vercel.app/api/health/predict \
 ```
 
 ### **Automated Testing**
+
 ```bash
 # Install testing dependencies
 npm install
@@ -425,7 +459,7 @@ npm test
 
 # Run specific test suites
 npm run test:auth        # Authentication tests
-npm run test:users       # User management tests  
+npm run test:users       # User management tests
 npm run test:health      # Health prediction tests
 npm run test:performance # Load testing
 ```
@@ -435,30 +469,32 @@ npm run test:performance # Load testing
 ## 🔧 Advanced Configuration
 
 ### **Custom Middleware Setup**
+
 ```javascript
 // Rate limiting configuration
-const rateLimit = require('express-rate-limit');
+const rateLimit = require("express-rate-limit");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP'
+  message: "Too many requests from this IP",
 });
 
-app.use('/api/', limiter);
+app.use("/api/", limiter);
 ```
 
 ### **Database Connection Optimization**
+
 ```javascript
 // Supabase client with connection pooling
-const { createClient } = require('@supabase/supabase-js');
+const { createClient } = require("@supabase/supabase-js");
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_ANON_KEY,
   {
     db: {
-      schema: 'public',
+      schema: "public",
     },
     auth: {
       autoRefreshToken: true,
@@ -473,6 +509,7 @@ const supabase = createClient(
 ## 📝 License & Legal
 
 ### **MIT License**
+
 ```
 MIT License
 
@@ -490,6 +527,7 @@ copies or substantial portions of the Software.
 ```
 
 ### **Data Privacy & Security**
+
 - **GDPR Compliant**: User data dapat dihapus sepenuhnya
 - **Encryption**: Data sensitif dienkripsi at-rest dan in-transit
 - **Audit Logs**: Semua akses data ter-record
@@ -519,6 +557,7 @@ copies or substantial portions of the Software.
 </table>
 
 ### **Contribution Guidelines**
+
 1. Fork repository ini
 2. Buat feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
@@ -526,6 +565,7 @@ copies or substantial portions of the Software.
 5. Buka Pull Request dengan deskripsi lengkap
 
 ### **Support & Contact**
+
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Hidayattt24/be-velora/issues)
 - 💡 **Feature Requests**: [GitHub Discussions](https://github.com/Hidayattt24/be-velora/discussions)
 - 📧 **Technical Support**: api-support@velora.app
@@ -536,6 +576,7 @@ copies or substantial portions of the Software.
 ## 🙏 Acknowledgments
 
 ### **Technology Stack**
+
 - [Node.js](https://nodejs.org/) - JavaScript runtime
 - [Express.js](https://expressjs.com/) - Web framework
 - [Supabase](https://supabase.com/) - Backend as a Service
@@ -543,6 +584,7 @@ copies or substantial portions of the Software.
 - [JWT](https://jwt.io/) - JSON Web Tokens for authentication
 
 ### **Special Thanks**
+
 - **Supabase Team** - untuk platform database yang amazing
 - **Vercel Team** - untuk serverless deployment yang seamless
 - **HuggingFace** - untuk hosting ML model kami
