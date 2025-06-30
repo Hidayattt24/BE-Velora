@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../fe-velora/public/landing/logononame.svg" alt="Velora Logo" width="120" height="120">
+  <img src="public/landing/logononame.svg" alt="Velora Logo" width="120" height="120">
   
   # 🌸 Velora Backend API
   
