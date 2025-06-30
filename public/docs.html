@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velora API Documentation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: linear-gradient(135deg, #fff5f7 0%, #ffe3ec 100%);
+        min-height: 100vh;
+        color: #1f2937;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 50px;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #d291bc 0%, #f39ad5 100%);
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 20px 40px rgba(210, 145, 188, 0.3);
+      }
+
+      .logo {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: bold;
+        color: #d291bc;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .badges {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+
+      .nav-item {
+        background: white;
+        padding: 12px 24px;
+        border-radius: 25px;
+        text-decoration: none;
+        color: #d291bc;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .nav-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(210, 145, 188, 0.3);
+      }
+
+      .section {
+        background: white;
+        margin-bottom: 30px;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        color: #d291bc;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section h3 {
+        color: #374151;
+        font-size: 1.3rem;
+        margin: 25px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #ffe3ec;
+      }
+
+      .endpoint {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .endpoint:hover {
+        border-color: #d291bc;
+        box-shadow: 0 4px 15px rgba(210, 145, 188, 0.1);
+      }
+
+      .method {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        margin-right: 10px;
+      }
+
+      .method.get {
+        background: #10b981;
+        color: white;
+      }
+      .method.post {
+        background: #3b82f6;
+        color: white;
+      }
+      .method.put {
+        background: #f59e0b;
+        color: white;
+      }
+      .method.delete {
+        background: #ef4444;
+        color: white;
+      }
+
+      .endpoint-url {
+        font-family: "Monaco", "Menlo", monospace;
+        background: #1f2937;
+        color: #10b981;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-size: 0.9rem;
+      }
+
+      .auth-required {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .auth-not-required {
+        background: #d1fae5;
+        color: #065f46;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .example {
+        background: #1f2937;
+        color: #f3f4f6;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 15px 0;
+        overflow-x: auto;
+      }
+
+      .example pre {
+        margin: 0;
+        font-family: "Monaco", "Menlo", monospace;
+        font-size: 0.9rem;
+      }
+
+      .response-example {
+        background: #065f46;
+        color: #d1fae5;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .table th,
+      .table td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .table th {
+        background: #f9fafb;
+        font-weight: 600;
+        color: #374151;
+      }
+
+      .status-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+
+      .status-healthy {
+        background: #10b981;
+      }
+      .status-warning {
+        background: #f59e0b;
+      }
+      .status-error {
+        background: #ef4444;
+      }
+
+      .try-it-btn {
+        background: #d291bc;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .try-it-btn:hover {
+        background: #b87aa0;
+        transform: translateY(-1px);
+      }
+
+      .footer {
+        text-align: center;
+        padding: 40px 20px;
+        color: #6b7280;
+        background: white;
+        border-radius: 15px;
+        margin-top: 40px;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2rem;
+        }
+
+        .container {
+          padding: 10px;
+        }
+
+        .section {
+          padding: 20px;
+        }
+      }
+
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #374151;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      .example-container {
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">🌸</div>
+        <h1>Velora API Documentation</h1>
+        <p>RESTful API untuk Platform Kesehatan Ibu Hamil</p>
+        <div class="badges">
+          <span class="badge">Version 1.0.0</span>
+          <span class="badge">Express.js</span>
+          <span class="badge">Supabase</span>
+          <span class="badge">JWT Auth</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav">
+        <a href="#overview" class="nav-item">Overview</a>
+        <a href="#authentication" class="nav-item">Authentication</a>
+        <a href="#endpoints" class="nav-item">Endpoints</a>
+        <a href="#examples" class="nav-item">Examples</a>
+        <a href="#status" class="nav-item">Status</a>
+      </div>
+
+      <!-- Overview Section -->
+      <div class="section" id="overview">
+        <h2>📋 API Overview</h2>
+        <p><strong>Base URL:</strong></p>
+        <div class="endpoint-url">https://api-velora.vercel.app</div>
+        <div class="endpoint-url">http://localhost:5000 (Development)</div>
+
+        <h3>Features</h3>
+        <ul>
+          <li>🔐 JWT-based authentication dengan refresh tokens</li>
+          <li>👤 User management & profile dengan foto upload</li>
+          <li>🏥 AI health prediction (84.21% akurasi)</li>
+          <li>📸 Gallery management untuk foto/video kehamilan</li>
+          <li>📅 Timeline tracking pregnancy milestones</li>
+          <li>🔍 Diagnosis & health recommendations</li>
+          <li>⚡ Rate limiting untuk security</li>
+          <li>🌐 CORS enabled untuk cross-origin requests</li>
+        </ul>
+
+        <h3>Response Format</h3>
+        <div class="example">
+          <pre>
+{
+  "success": true,
+  "message": "Request berhasil",
+  "data": { ... },
+  "timestamp": "2025-01-28T10:00:00Z"
+}</pre
+          >
+        </div>
+      </div>
+
+      <!-- Authentication Section -->
+      <div class="section" id="authentication">
+        <h2>🔐 Authentication</h2>
+        <p>
+          API menggunakan JWT (JSON Web Tokens) untuk authentication. Include
+          token di header:
+        </p>
+
+        <div class="example">
+          <pre>Authorization: Bearer YOUR_JWT_TOKEN</pre>
+        </div>
+
+        <h3>Getting Started</h3>
+        <ol>
+          <li>Register akun baru via <code>/api/auth/register</code></li>
+          <li>
+            Login untuk mendapatkan access token via
+            <code>/api/auth/login</code>
+          </li>
+          <li>Include token di header untuk protected endpoints</li>
+          <li>Refresh token saat expired via <code>/api/auth/refresh</code></li>
+        </ol>
+
+        <h3>Rate Limiting</h3>
+        <table class="table">
+          <tr>
+            <th>Limit</th>
+            <th>Window</th>
+            <th>Scope</th>
+          </tr>
+          <tr>
+            <td>100 requests</td>
+            <td>15 minutes</td>
+            <td>Per IP Address</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Endpoints Section -->
+      <div class="section" id="endpoints">
+        <h2>🌐 API Endpoints</h2>
+
+        <!-- Core Endpoints -->
+        <h3>Core System</h3>
+
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <strong>/</strong>
+          <span class="auth-not-required">No Auth</span>
+          <div class="endpoint-url">GET https://api-velora.vercel.app/</div>
+          <p>Welcome message & API information</p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <strong>/health</strong>
+          <span class="auth-not-required">No Auth</span>
+          <div class="endpoint-url">
+            GET https://api-velora.vercel.app/health
+          </div>
+          <p>Health check & system status</p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <strong>/docs</strong>
+          <span class="auth-not-required">No Auth</span>
+          <div class="endpoint-url">GET https://api-velora.vercel.app/docs</div>
+          <p>Interactive API documentation (this page)</p>
+        </div>
+
+        <!-- Authentication Endpoints -->
+        <h3>Authentication 🔐</h3>
+
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <strong>/api/auth/register</strong>
+          <span class="auth-not-required">No Auth</span>
+          <div class="endpoint-url">
+            POST https://api-velora.vercel.app/api/auth/register
+          </div>
+          <p>Registrasi pengguna baru</p>
+          <p><strong>Body:</strong> name, email, password, phone</p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <strong>/api/auth/login</strong>
+          <span class="auth-not-required">No Auth</span>
+          <div class="endpoint-url">
+            POST https://api-velora.vercel.app/api/auth/login
+          </div>
+          <p>Login pengguna & mendapatkan JWT token</p>
+          <p><strong>Body:</strong> email, password</p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <strong>/api/auth/refresh</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            POST https://api-velora.vercel.app/api/auth/refresh
+          </div>
+          <p>Refresh JWT token</p>
+        </div>
+
+        <!-- User Management -->
+        <h3>User Management 👤</h3>
+
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <strong>/api/users/profile</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            GET https://api-velora.vercel.app/api/users/profile
+          </div>
+          <p>Get user profile & pregnancy data</p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method put">PUT</span>
+          <strong>/api/users/profile</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            PUT https://api-velora.vercel.app/api/users/profile
+          </div>
+          <p>Update user profile information</p>
+        </div>
+
+        <!-- Health Prediction -->
+        <h3>Health Prediction 🏥</h3>
+
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <strong>/api/health/predict</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            POST https://api-velora.vercel.app/api/health/predict
+          </div>
+          <p>Prediksi risiko kesehatan menggunakan AI (84.21% akurasi)</p>
+          <p>
+            <strong>Body:</strong> age, systolic_bp, diastolic_bp, bs,
+            body_temp, heart_rate
+          </p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <strong>/api/health/history</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            GET https://api-velora.vercel.app/api/health/history
+          </div>
+          <p>Riwayat prediksi kesehatan pengguna</p>
+        </div>
+
+        <!-- Gallery Management -->
+        <h3>Gallery Management 📸</h3>
+
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <strong>/api/gallery</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            GET https://api-velora.vercel.app/api/gallery
+          </div>
+          <p>Get all user photos/videos</p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <strong>/api/gallery/upload</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            POST https://api-velora.vercel.app/api/gallery/upload
+          </div>
+          <p>Upload foto/video baru (max 10MB)</p>
+          <p><strong>Content-Type:</strong> multipart/form-data</p>
+        </div>
+
+        <div class="endpoint">
+          <span class="method delete">DELETE</span>
+          <strong>/api/gallery/:id</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            DELETE https://api-velora.vercel.app/api/gallery/:id
+          </div>
+          <p>Hapus foto/video tertentu</p>
+        </div>
+
+        <!-- Timeline Tracking -->
+        <h3>Timeline Tracking 📅</h3>
+
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <strong>/api/timeline</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            GET https://api-velora.vercel.app/api/timeline
+          </div>
+          <p>Get pregnancy timeline & milestones</p>
+        </div>
+
+        <!-- Diagnosis -->
+        <h3>Diagnosis & Recommendations 🔍</h3>
+
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <strong>/api/diagnosa/analyze</strong>
+          <span class="auth-required">Auth Required</span>
+          <div class="endpoint-url">
+            POST https://api-velora.vercel.app/api/diagnosa/analyze
+          </div>
+          <p>Analyze symptoms & get recommendations</p>
+        </div>
+      </div>
+
+      <!-- Examples Section -->
+      <div class="section" id="examples">
+        <h2>💻 Code Examples</h2>
+
+        <h3>User Registration</h3>
+        <div class="example-container">
+          <div class="example">
+            <button
+              class="copy-btn"
+              onclick="copyToClipboard('register-example')"
+            >
+              Copy
+            </button>
+            <pre id="register-example">
+curl -X POST https://api-velora.vercel.app/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "password": "securePassword123",
+    "phone": "+628123456789"
+  }'</pre
+            >
+          </div>
+        </div>
+
+        <h3>User Login</h3>
+        <div class="example-container">
+          <div class="example">
+            <button class="copy-btn" onclick="copyToClipboard('login-example')">
+              Copy
+            </button>
+            <pre id="login-example">
+curl -X POST https://api-velora.vercel.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "jane@example.com",
+    "password": "securePassword123"
+  }'</pre
+            >
+          </div>
+        </div>
+
+        <h3>Health Prediction</h3>
+        <div class="example-container">
+          <div class="example">
+            <button
+              class="copy-btn"
+              onclick="copyToClipboard('health-example')"
+            >
+              Copy
+            </button>
+            <pre id="health-example">
+curl -X POST https://api-velora.vercel.app/api/health/predict \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "age": 28,
+    "systolic_bp": 120,
+    "diastolic_bp": 80,
+    "bs": 6.5,
+    "body_temp": 98.6,
+    "heart_rate": 76
+  }'</pre
+            >
+          </div>
+        </div>
+
+        <h3>Response Example</h3>
+        <div class="example response-example">
+          <pre>
+{
+  "success": true,
+  "message": "Prediksi berhasil",
+  "data": {
+    "risk_level": "low",
+    "probability": 0.15,
+    "recommendations": [
+      "Pertahankan pola makan sehat",
+      "Lakukan olahraga ringan secara teratur",
+      "Kontrol rutin setiap bulan"
+    ]
+  },
+  "timestamp": "2025-01-28T10:00:00Z"
+}</pre
+          >
+        </div>
+      </div>
+
+      <!-- Status Section -->
+      <div class="section" id="status">
+        <h2>📊 API Status</h2>
+
+        <table class="table">
+          <tr>
+            <th>Service</th>
+            <th>Status</th>
+            <th>Response Time</th>
+            <th>Uptime</th>
+          </tr>
+          <tr>
+            <td>
+              <span class="status-indicator status-healthy"></span>API Server
+            </td>
+            <td>Healthy</td>
+            <td>&lt; 200ms</td>
+            <td>99.9%</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="status-indicator status-healthy"></span>Database
+            </td>
+            <td>Connected</td>
+            <td>&lt; 50ms</td>
+            <td>99.99%</td>
+          </tr>
+          <tr>
+            <td><span class="status-indicator status-healthy"></span>ML API</td>
+            <td>Available</td>
+            <td>&lt; 500ms</td>
+            <td>99.5%</td>
+          </tr>
+        </table>
+
+        <h3>Environment Info</h3>
+        <table class="table">
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Version</td>
+            <td>1.0.0</td>
+          </tr>
+          <tr>
+            <td>Environment</td>
+            <td>Production</td>
+          </tr>
+          <tr>
+            <td>Last Deploy</td>
+            <td id="deploy-time">2025-01-28 10:00:00 UTC</td>
+          </tr>
+          <tr>
+            <td>Region</td>
+            <td>Singapore (sin1)</td>
+          </tr>
+        </table>
+
+        <div style="text-align: center; margin-top: 30px">
+          <button class="try-it-btn" onclick="testHealthEndpoint()">
+            Test Health Endpoint
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p><strong>Velora API v1.0.0</strong> - Platform Kesehatan Ibu Hamil</p>
+        <p>
+          Dibuat dengan 💝 oleh Tim Velora |
+          <a href="https://velora-lake.vercel.app" style="color: #d291bc"
+            >Frontend App</a
+          >
+          |
+          <a
+            href="https://github.com/Hidayattt24/be-velora"
+            style="color: #d291bc"
+            >GitHub</a
+          >
+        </p>
+        <p style="margin-top: 10px; font-size: 0.9rem">
+          © 2025 Velora Team. All rights reserved.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = element.parentElement.querySelector(".copy-btn");
+          const originalText = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => {
+            btn.textContent = originalText;
+          }, 2000);
+        });
+      }
+
+      function testHealthEndpoint() {
+        const btn = event.target;
+        btn.textContent = "Testing...";
+        btn.disabled = true;
+
+        fetch("/health")
+          .then((response) => response.json())
+          .then((data) => {
+            alert("Health Check Result:\n" + JSON.stringify(data, null, 2));
+          })
+          .catch((error) => {
+            alert("Error: " + error.message);
+          })
+          .finally(() => {
+            btn.textContent = "Test Health Endpoint";
+            btn.disabled = false;
+          });
+      }
+
+      // Smooth scrolling for navigation
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", (e) => {
+          e.preventDefault();
+          const target = document.querySelector(item.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
+
+      // Update deploy time
+      document.getElementById("deploy-time").textContent =
+        new Date().toISOString().replace("T", " ").substr(0, 19) + " UTC";
+    </script>
+  </body>
+</html>

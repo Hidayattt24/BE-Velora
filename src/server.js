@@ -105,33 +105,118 @@ app.get("/", (req, res) => {
   });
 });
 
-// Documentation endpoint
-app.get("/docs", (req, res) => {
-  const path = require("path");
-  const fs = require("fs");
-
-  try {
-    const docsPath = path.join(__dirname, "../docs/docs.html");
-    const docsContent = fs.readFileSync(docsPath, "utf8");
-    res.setHeader("Content-Type", "text/html");
-    res.send(docsContent);
-  } catch (error) {
-    res.status(404).json({
-      success: false,
-      message: "Documentation not found",
-      alternative: "Visit https://api-velora.vercel.app for documentation",
-    });
-  }
-});
-
 // Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({
-    status: "OK",
-    message: "Velora API Server is running",
+    success: true,
+    message: "Velora API is running smoothly",
     timestamp: new Date().toISOString(),
-    version: "1.0.0",
+    uptime: process.uptime(),
   });
+});
+
+// Documentation endpoint
+app.get("/docs", (req, res) => {
+  try {
+    const path = require("path");
+    const fs = require("fs");
+    
+    // Try multiple paths for the docs file
+    const possiblePaths = [
+      path.join(__dirname, "..", "public", "docs.html"),
+      path.join(__dirname, "..", "docs", "docs.html"),
+      path.join(process.cwd(), "public", "docs.html"),
+      path.join(process.cwd(), "docs", "docs.html")
+    ];
+    
+    let docsContent = null;
+    for (const docsPath of possiblePaths) {
+      if (fs.existsSync(docsPath)) {
+        docsContent = fs.readFileSync(docsPath, "utf8");
+        break;
+      }
+    }
+    
+    if (docsContent) {
+      res.setHeader("Content-Type", "text/html");
+      res.send(docsContent);
+    } else {
+      // Fallback to inline documentation if file not found
+      res.setHeader("Content-Type", "text/html");
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Velora API Documentation</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+            .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+            h1 { color: #d291bc; }
+            .endpoint { margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 5px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>🌸 Velora API Documentation</h1>
+            <p>Selamat datang di dokumentasi API Velora - platform kesehatan maternal yang inovatif.</p>
+            
+            <div class="endpoint">
+              <h3>GET /</h3>
+              <p>Welcome endpoint dengan informasi dasar API</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>GET /health</h3>
+              <p>Health check endpoint untuk monitoring status API</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>POST /api/auth/register</h3>
+              <p>Registrasi user baru</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>POST /api/auth/login</h3>
+              <p>Login user yang sudah terdaftar</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>GET /api/users/profile</h3>
+              <p>Mendapatkan profil user (auth required)</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>POST /api/health/predict</h3>
+              <p>Prediksi risiko kesehatan maternal (auth required)</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>GET /api/gallery</h3>
+              <p>Mendapatkan galeri foto (auth required)</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>GET /api/timeline</h3>
+              <p>Mendapatkan timeline kesehatan</p>
+            </div>
+            
+            <div class="endpoint">
+              <h3>POST /api/diagnosa</h3>
+              <p>Endpoint diagnosa kesehatan</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `);
+    }
+  } catch (error) {
+    console.error("Error serving documentation:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error loading documentation",
+      error: error.message,
+    });
+  }
 });
 
 // API routes
@@ -164,6 +249,9 @@ app.use(
   },
   express.static("uploads")
 );
+
+// Serve public static files (like docs.html)
+app.use("/public", express.static("public"));
 
 // Error handling middleware
 app.use(notFound);

@@ -82,7 +82,7 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public (keep our docs)
 
 # Storybook build outputs
 .out
@@ -115,6 +115,7 @@ Thumbs.db
 # Upload directories
 uploads/
 public/uploads/
+# Keep public docs but ignore uploads inside public
 
 # Test results and outputs
 tests/results/
