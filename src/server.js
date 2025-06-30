@@ -120,15 +120,15 @@ app.get("/docs", (req, res) => {
   try {
     const path = require("path");
     const fs = require("fs");
-    
+
     // Try multiple paths for the docs file
     const possiblePaths = [
       path.join(__dirname, "..", "public", "docs.html"),
       path.join(__dirname, "..", "docs", "docs.html"),
       path.join(process.cwd(), "public", "docs.html"),
-      path.join(process.cwd(), "docs", "docs.html")
+      path.join(process.cwd(), "docs", "docs.html"),
     ];
-    
+
     let docsContent = null;
     for (const docsPath of possiblePaths) {
       if (fs.existsSync(docsPath)) {
@@ -136,7 +136,7 @@ app.get("/docs", (req, res) => {
         break;
       }
     }
-    
+
     if (docsContent) {
       res.setHeader("Content-Type", "text/html");
       res.send(docsContent);
